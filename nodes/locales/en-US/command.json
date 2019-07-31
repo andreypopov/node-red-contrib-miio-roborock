@@ -1,7 +1,10 @@
 {
     "label": {
         "name": "Name",
-        "server": "Device"
+        "server": "Device",
+        "command": "Command",
+        "payload": "Payload",
+        "options": "Options"
     },
     "placeholder": {
         "name": "Name"

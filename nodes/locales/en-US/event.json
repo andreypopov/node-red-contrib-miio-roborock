@@ -1,10 +1,17 @@
 {
     "label": {
         "name": "Name",
-        "server": "Device"
+        "server": "Device",
+        "event_types": "Event Types",
+        "start_output": "Start Output",
+        "start_output_help": "Send state on start"
     },
     "placeholder": {
         "name": "Name"
+    },
+    "multiselect": {
+        "selected": "selected",
+        "complete_data": "All events"
     },
     "status": {
         "server_node_error": "server node error",

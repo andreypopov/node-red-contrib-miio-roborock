@@ -1,5 +1,6 @@
 var moment = require('moment');
 
+
 module.exports = function(RED) {
     class xiaomiRoborockEvent {
         constructor(config) {
@@ -15,8 +16,13 @@ module.exports = function(RED) {
             if (node.server) {
                 // node.server.on('onClose', () => this.onClose());
                 node.server.on('onInitEnd', (status) => node.onInitEnd(status));
-                node.server.on('onStateChanged', (data) => node.onStateChanged(data));
+                node.server.on('onStateChanged', (data, output) => node.onStateChanged(data, output));
                 node.server.on('onStateChangedError', (error) => node.onStateChangedError(error));
+
+
+                if (node.config.outputAtStartup) {
+                    node.sendState();
+                }
             } else {
                 node.status({
                     fill: "red",
@@ -29,7 +35,22 @@ module.exports = function(RED) {
         onInitEnd(status) {
             var node = this;
             node.updateStatus();
-            node.send({'status':status});
+
+            if (node.config.outputAtStartup) {
+                node.sendState();
+            }
+        }
+
+        sendState() {
+            var node = this;
+            if (Object.keys(node.server.status).length) {
+                for (var key in node.server.status) {
+                    var value = node.server.status[key];
+                    if ((node.config.eventTypes).indexOf(key) >= 0) {
+                        node.send({'payload': {"key":key, "value":value}, 'status': node.server.status});
+                    }
+                }
+            }
         }
 
         updateStatus() {
@@ -45,9 +66,31 @@ module.exports = function(RED) {
                 case "cleaning":
                     var duration = moment.duration({"seconds":node.server.status.cleanTime});
                     status.text += ' ' + duration.humanize();
+                    status.shape = 'ring';
                 break;
 
+
+                case "returning":
+                    status.shape = 'ring';
+                    break;
+
+
+                case "error":
+                    status.fill = 'red';
+                    status.shape = 'dot';
+                    status.text = status.text?status.text:'error';
+                break;
+
+                case "charger-offline":
+                    status.fill = 'red';
+                    status.shape = 'dot';
+                    if ("error" in node.server.status && node.server.status.error && "code" in node.server.status.error) {
+                        status.text += ' code #'+ node.server.status.error.code;
+                    }
+                    break;
+
                 case "waiting":
+                case "paused":
                     status.fill = 'yellow';
                     status.shape = 'ring';
                 break;
@@ -60,6 +103,8 @@ module.exports = function(RED) {
                     } else {
                         status.fill = 'green';
                     }
+
+                    status.shape = node.server.status.batteryLevel<95?'ring':'dot';
                 break;
             }
 
@@ -69,35 +114,23 @@ module.exports = function(RED) {
             node.status(status);
         }
 
-        onStateChanged(data) {
+        onStateChanged(data, output) {
             var node = this;
-            console.log(data);
 
             if ("key" in data &&  ["state", "cleanTime", "batteryLevel"].indexOf(data.key) >= 0) {
                 node.updateStatus();
             }
 
-            //ignore for now
-            if ("key" in data &&  ["msg_seq"].indexOf(data.key) >= 0) {
-               return false;
+            if (output) {
+                if ("key" in data && (node.config.eventTypes).indexOf(data.key) >= 0) {
+                    node.send({'payload': data, 'status': node.server.status});
+                }
             }
-
-            node.send({'payload': data, 'status':node.server.status});
         }
 
         onStateChangedError(error) {
             var node = this;
-            console.log('ERROR!!!!!!!!!!!!!!!!!!!');
-            console.log(error);
-            console.log(error.description);
-            console.log('=====');
-
-            node.status({
-                fill: "red",
-                shape: "dot",
-                text: error.id
-            });
-            node.server.warn("Roborock error: "+ error.description)
+            node.updateStatus();
         }
 
     }

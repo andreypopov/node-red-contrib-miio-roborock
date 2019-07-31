@@ -1,4 +1,6 @@
 <script type="text/x-red" data-template-name="miio-roborock-command">
+    <link rel="stylesheet" href="miioroborock/static/css/bootstrap-multiselect.css" type="text/css" />
+
     <div class="form-row">
         <label for="node-input-name" class="l-width"><i class="icon-tag"></i> <span data-i18n="label.name"></span></label>
         <input type="text" id="node-input-name" data-i18n="[placeholder]placeholder.name">
@@ -7,18 +9,15 @@
         <label for="node-input-server" class="l-width"><i class="fa fa-globe"></i> <span data-i18n="label.server"></span></label>
         <input type="text" id="node-input-server">
     </div>
-
     <div class="form-row">
-        <label for="node-input-command"><i class="icon-bookmark"></i> Command</label>
-        <input type="text" id="node-input-command">
+        <label for="node-input-command" class="l-width"><i class="fa fa-tasks"></i> <span data-i18n="label.command"></span></label>
+        <input type="text" id="node-input-command" style="width:70%">
+        <input type="hidden" id="node-input-commandType">
     </div>
-    <div class="form-row">
-        <label for="node-input-args"><i class="icon-bookmark"></i> Args</label>
-        <input type="text" id="node-input-args">
-    </div>
-    <div class="form-row">
-        <label for="node-input-jobid"><i class="icon-bookmark"></i> JobID</label>
-        <input type="text" id="node-input-jobid">
+	<div class="form-row">
+        <label for="node-input-payload" class="l-width"><i class="fa fa-envelope"></i> <span data-i18n="label.payload"></span></label>
+        <input type="text" id="node-input-payload" style="width:70%">
+        <input type="hidden" id="node-input-payloadType">
     </div>
 </script>
 
@@ -34,9 +33,21 @@
                 type: "miio-roborock-server",
                 required: true
             },
-            command: {value:"", required:false},
-            args: {value:"", required:false},
-            jobid: {value:"", required:false},
+            command_name: {
+                value: null
+            },
+            command: {
+                value: 'find_me',
+            },
+            commandType: {
+                value: 'vacuum_cmd',
+            },
+            payload: {
+                value: 'payload',
+            },
+            payloadType: {
+                value: 'msg',
+            }
         },
         inputs: 1,
         outputs: 1,
@@ -44,11 +55,78 @@
         paletteLabel: 'Roborock: command',
         icon: "miio.png",
         label: function () {
-            return this.name || 'Roborock: command';
+            var label = 'Roborock: command';
+            if (this.name) {
+                label = this.name;
+            } else if (typeof(this.command_name) == 'string' && this.command_name.length) {
+                label = this.command_name;
+            }
+            return label;
         },
+
         oneditprepare: function () {
+            var node = this;
+
+
+            // $eventTypesSelect.children().remove();
+            $.getJSON('miioroborock/getCommands', {
+                nodeID: node.id
+            }).done(function (data, textStatus, jqXHR) {
+                try {
+                    var commands = [];
+                    $.each(data, function(index, value) {
+                        commands.push({'value':index, 'label':value.name});
+                    });
+
+
+                    var topicTypes = {
+                        value: 'vacuum_cmd',
+                        label: 'mi',
+                        icon: 'icons/node-red-contrib-miio-roborock/icon-color.png',
+                        options: commands
+                    };
+                    $('#node-input-command').typedInput({
+                        types: [
+                            topicTypes,
+                            {value:'homekit',label:'homekit',icon: 'icons/node-red-contrib-miio-roborock/homekit-logo.png',options:['homekit']},
+                            'str', 'msg', {value:'object',label:'object',options:['json']}],
+                        default: 'msg',
+                        value: 'topic',
+                        typeField: $('#node-input-commandType'),
+                    });
+                    // $('#node-input-command').on('change', function(type, value) {
+                    //     var val = $(this).val();
+                    //
+                    //     if ('toggle' === val) {
+                    //         $('#node-input-payload').closest('.form-row').hide();
+                    //     } else {
+                    //         $('#node-input-payload').closest('.form-row').show();
+                    //     }
+                    // });
+
+                    $('#node-input-payload').typedInput({
+                        types: ['msg', 'flow', 'global', 'str', 'num', 'date'],
+                        default: 'msg',
+                        value: 'payload',
+                        typeField: $('#node-input-payloadType'),
+                    });
+                    $('#node-input-commandType').val(node.commandType);
+                    $('#node-input-payloadType').val(node.payloadType);
+
+
+                } catch (error) {
+                    console.error('Error #4535');
+                    console.log(error);
+                }
+
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+
+            });
         },
         oneditsave: function () {
+            var commandCode = $('#node-input-command').val();
+            var commandLabel = $('.red-ui-typedInput-options [value='+commandCode+']').text();
+            this.command_name = commandLabel?commandLabel:null;
         }
     });
 </script>

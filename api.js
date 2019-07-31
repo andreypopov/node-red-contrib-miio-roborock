@@ -1,6 +1,6 @@
 const miio = require('miio');
 
-var NODE_PATH = '/miio-roborock/';
+var NODE_PATH = '/miioroborock/';
 
 module.exports = function (RED) {
     /**
@@ -14,7 +14,25 @@ module.exports = function (RED) {
         res.sendFile(req.params[0], options);
     });
 
+    RED.httpAdmin.get(NODE_PATH + 'getStatus', function (req, res) {
+        var config = req.query;
+        var controller = RED.nodes.getNode(config.controllerID);
+        if (controller && controller.constructor.name === "ServerNode") {
+            res.json(controller.status);
+        } else {
+            res.status(404).end();
+        }
+    });
 
+    RED.httpAdmin.get(NODE_PATH + 'getCommands', function (req, res) {
+        var config = req.query;
+        var node = RED.nodes.getNode(config.nodeID);
+        if (node && node.constructor.name === "xiaomiRoborockCommand") {
+            res.json(node.getCommands());
+        } else {
+            res.status(404).end();
+        }
+    });
     // RED.httpAdmin.get(NODE_PATH + 'find', function (req, res) {
     //     var config = req.query;
     //     var controller = RED.nodes.getNode(config.controllerID);

@@ -1,9 +1,9 @@
 const EventEmitter = require('events');
 const miio = require('miio');
-// const XiaomiRoborockVacuum = require('../static/js/homebridge-xiaomi-roborock-vacuum.js');
+const XiaomiRoborockVacuum = require('../static/js/homebridge-xiaomi-roborock-vacuum.js');
 
 
-module.exports = function(RED) {
+module.exports = function (RED) {
     class ServerNode {
         constructor(n) {
             RED.nodes.createNode(this, n);
@@ -19,13 +19,13 @@ module.exports = function(RED) {
             node.on('close', () => this.onClose());
 
             node.connect().then(result => {
-                node.getStatus().then(result => {
+                node.getStatus(true).then(result => {
                     node.emit("onInitEnd", result);
                 });
             });
 
             node.refreshStatusTimer = setInterval(function () {
-                node.getStatus();
+                node.getStatus(true);
             }, node.refreshFindInterval);
         }
 
@@ -52,12 +52,14 @@ module.exports = function(RED) {
         onClose() {
             var that = this;
             clearInterval(that.refreshStatusTimer);
+
+            if (node.device) node.device.destroy();
         }
 
         connect() {
             var node = this;
 
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 node.miio = miio.device({
                     address: node.config.ip,
                     token: node.config.token
@@ -72,54 +74,65 @@ module.exports = function(RED) {
             });
         }
 
-        getStatus() {
+        getStatus(force = false) {
             var that = this;
 
-            return new Promise(function(resolve, reject) {
-                if (that.device) {
-                    console.log('GET STATUS:');
-                    that.device.call("get_status", [])
-                        .then(result => {
-                            that.device.loadProperties(Object.keys(result[0])).then(result => {
+            return new Promise(function (resolve, reject) {
+                if (force || !that.status) {
+                    if (that.device) {
+                        that.device.call("get_status", [])
+                            .then(result => {
+                                that.device.loadProperties(Object.keys(result[0])).then(result => {
+                                    for (var key in result) {
+                                        var value = result[key];
+                                        if (key in that.status) {
+                                            if (!(key in that.status) || that.status[key] !== value) {
+                                                if ("error" === key) {
+                                                    //get error message
+                                                    if (value && "code" in value) {
+                                                        if ("id" + value.code in XiaomiRoborockVacuum.errors) {
+                                                            value.message = XiaomiRoborockVacuum.errors["id" + value.code].description;
+                                                        }
+                                                        that.warn('Miio Roborock error: #' + value.code + ': ' + value.message);
+                                                    }
 
-
-                                for (var key in result) {
-                                    var value = result[key];
-
-                                    if (key in that.status) {
-                                        if (that.status[key] !== value) {
-                                            if ("error" === key) {
-                                                that.emit("onStateChangedError", value);
-                                            } else {
-                                                that.status[key] = value;
-                                                that.emit("onStateChanged", {key:key, value:value});
+                                                    if (value) {
+                                                        that.status[key] = value;
+                                                        that.emit("onStateChangedError", value);
+                                                    }
+                                                } else {
+                                                    that.status[key] = value;
+                                                    that.emit("onStateChanged", {key: key, value: value}, true);
+                                                }
                                             }
+                                        } else { //init: silent add
+                                            that.status[key] = value;
+                                            that.emit("onStateChanged", {key: key, value: value}, false);
                                         }
-                                    } else { //init: silent add
-                                        that.status[key] = value;
                                     }
-                                }
 
+                                    resolve(that.status);
+                                }).catch(err => {
+                                    console.log('Encountered an error while controlling device');
+                                    console.log('Error was:');
+                                    console.log(err.message);
+                                    reject(err);
+                                });
 
-                                resolve(that.status);
-                            }).catch(err => {
+                            })
+                            .catch(err => {
                                 console.log('Encountered an error while controlling device');
                                 console.log('Error was:');
                                 console.log(err.message);
                                 reject(err);
                             });
-
-                        })
-                        .catch(err => {
-                            console.log('Encountered an error while controlling device');
-                            console.log('Error was:');
-                            console.log(err.message);
-                            reject(err);
-                        });
+                    } else {
+                        reject('No device');
+                    }
+                } else {
+                    resolve(that.status);
                 }
             });
-
-
         }
 
     }
