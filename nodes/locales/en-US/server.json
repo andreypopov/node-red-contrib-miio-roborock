@@ -1,7 +1,9 @@
 {
     "label": {
         "name": "Name",
-        "host": "Host",
-        "token": "Token"
+        "ip_address": "IP-Address",
+        "token": "Token",
+        "settings": "Settings",
+        "find": "Find!"
     }
 }

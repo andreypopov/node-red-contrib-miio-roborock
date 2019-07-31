@@ -4,26 +4,30 @@
         <input type="text" id="node-config-input-name">
     </div>
     <div class="form-row">
-        <label for="node-config-input-host"><i class="icon-globe"></i> <span data-i18n="label.host"></span></label>
-        <input type="text" id="node-config-input-host">
+        <label for="node-config-input-ip"><i class="icon-globe"></i> <span data-i18n="label.ip_address"></span></label>
+        <input type="text" id="node-config-input-ip">
     </div>
     <div class="form-row">
         <label for="node-config-input-token"><i class="icon-lock"></i> <span data-i18n="label.token"></span></label>
         <input type="text" id="node-config-input-token">
     </div>
     <div class="form-row">
-        <label for="node-input-pooling"><i class="icon-time"></i> Polling interval (s)</label>
+        <label for="node-input-pooling"><i class="icon-time"></i> Polling, sec</label>
         <input type="text" id="node-config-input-polling">
     </div>
+<!--    <div class="form-row">-->
+<!--        <label for="auto-find" class="l-width"><i class="fa fa-refresh"></i> <span data-i18n="label.settings"></span></label>-->
+<!--        <button type="button" style="width: 70%" class="btn btn-light" id="auto-find" name="auto-find"><span data-i18n="label.find"></span></button>-->
+<!--	</div>-->
 </script>
 
 <script type="text/javascript">
     RED.nodes.registerType('miio-roborock-server',{
         category: 'config',
         defaults: {
-            name: {value: "", required: false},
-            host: {value: "localhost", required: true},
-            token: {value: "XiAoMiToKeN", required: true},
+            name: {value: "", required: true},
+            ip: {value: "", required: true},
+            token: {value: "", required: true},
             polling: {
                 value: 20,
                 required: true,
@@ -34,7 +38,20 @@
         },
         label: function() {
             return this.name || this.host;
-        }
+        },
+        oneditprepare: function () {
+            var node = this;
+            // var $findBtn = $('#auto-find');
+            //
+            // $findBtn.on('click', function(){
+            //
+            //     $.getJSON('miio-roborock/find', {})
+            //         .done(function (data, textStatus, jqXHR) {
+            //             console.log(data);
+            //         }).fail(function (jqXHR, textStatus, errorThrown) {});
+            //
+            // });
+        },
     });
 </script>
 
