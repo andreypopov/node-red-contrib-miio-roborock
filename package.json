@@ -7,6 +7,7 @@
     "url": "https://github.com/andreypopov/node-red-contrib-miio-roborock/issues/"
   },
   "dependencies": {
+    "bootstrap-multiselect": "latest",
     "events": "latest",
     "miio": "latest",
     "moment": "latest"
@@ -24,7 +25,8 @@
     "nodes": {
       "event": "nodes/event.js",
       "command": "nodes/command.js",
-      "server": "nodes/server.js"
+      "server": "nodes/server.js",
+      "api": "api.js"
     }
   },
   "repository": {

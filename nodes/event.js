@@ -122,7 +122,7 @@ module.exports = function(RED) {
             }
 
             if (output) {
-                if ("key" in data && (node.config.eventTypes).indexOf(data.key) >= 0) {
+                if ("key" in data && node.config.eventTypes && (node.config.eventTypes).indexOf(data.key) >= 0) {
                     node.send({'payload': data, 'status': node.server.status});
                 }
             }
@@ -136,3 +136,5 @@ module.exports = function(RED) {
     }
     RED.nodes.registerType('miio-roborock-event', xiaomiRoborockEvent);
 };
+
+
