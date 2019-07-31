@@ -31,6 +31,5 @@
     "type": "git",
     "url": "git+https://github.com/andreypopov/node-red-contrib-miio-roborock"
   },
-  "version": "0.0.1"
+  "version": "0.0.2"
 }
-
