@@ -1,0 +1,41 @@
+<script type="text/x-red" data-template-name="miio-roborock-server">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="icon-bookmark"></i> <span data-i18n="label.name"></span></label>
+        <input type="text" id="node-config-input-name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-host"><i class="icon-globe"></i> <span data-i18n="label.host"></span></label>
+        <input type="text" id="node-config-input-host">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-token"><i class="icon-lock"></i> <span data-i18n="label.token"></span></label>
+        <input type="text" id="node-config-input-token">
+    </div>
+    <div class="form-row">
+        <label for="node-input-pooling"><i class="icon-time"></i> Polling interval (s)</label>
+        <input type="text" id="node-config-input-polling">
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('miio-roborock-server',{
+        category: 'config',
+        defaults: {
+            name: {value: "", required: false},
+            host: {value: "localhost", required: true},
+            token: {value: "XiAoMiToKeN", required: true},
+            polling: {
+                value: 20,
+                required: true,
+                validate: function (value) {
+                    return value > 4;
+                }
+            },
+        },
+        label: function() {
+            return this.name || this.host;
+        }
+    });
+</script>
+
+

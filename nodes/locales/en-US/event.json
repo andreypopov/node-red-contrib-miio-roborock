@@ -1,0 +1,13 @@
+{
+    "label": {
+        "name": "Name",
+        "server": "Device"
+    },
+    "placeholder": {
+        "name": "Name"
+    },
+    "status": {
+        "server_node_error": "server node error",
+        "event": "event"
+    }
+}

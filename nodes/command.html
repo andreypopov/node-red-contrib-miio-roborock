@@ -1,0 +1,54 @@
+<script type="text/x-red" data-template-name="miio-roborock-command">
+    <div class="form-row">
+        <label for="node-input-name" class="l-width"><i class="icon-tag"></i> <span data-i18n="label.name"></span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]placeholder.name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-server" class="l-width"><i class="fa fa-globe"></i> <span data-i18n="label.server"></span></label>
+        <input type="text" id="node-input-server">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-command"><i class="icon-bookmark"></i> Command</label>
+        <input type="text" id="node-input-command">
+    </div>
+    <div class="form-row">
+        <label for="node-input-args"><i class="icon-bookmark"></i> Args</label>
+        <input type="text" id="node-input-args">
+    </div>
+    <div class="form-row">
+        <label for="node-input-jobid"><i class="icon-bookmark"></i> JobID</label>
+        <input type="text" id="node-input-jobid">
+    </div>
+</script>
+
+<script type='text/javascript'>
+    RED.nodes.registerType('miio-roborock-command', {
+        category: 'Xiaomi',
+        color: '#ff6700',
+        defaults: {
+            name: {
+                value: ""
+            },
+            server: {
+                type: "miio-roborock-server",
+                required: true
+            },
+            command: {value:"", required:false},
+            args: {value:"", required:false},
+            jobid: {value:"", required:false},
+        },
+        inputs: 1,
+        outputs: 1,
+        outputLabels: ["result"],
+        paletteLabel: 'Roborock: command',
+        icon: "miio.png",
+        label: function () {
+            return this.name || 'Roborock: command';
+        },
+        oneditprepare: function () {
+        },
+        oneditsave: function () {
+        }
+    });
+</script>

@@ -1,0 +1,35 @@
+{
+  "author": {
+    "name": "Andrey Popov",
+    "email": "andrey_popov@me.com"
+  },
+  "bugs": {
+    "url": "https://github.com/andreypopov/node-red-contrib-miio-roborock/issues/"
+  },
+  "dependencies": {
+    "events": "latest",
+    "miio": "latest"
+  },
+  "description": "Xiaomi Roborock connectivity nodes for node-red",
+  "homepage": "https://github.com/andreypopov/node-red-contrib-miio-roborock",
+  "keywords": [
+    "xiaomi",
+    "miio",
+    "roborock"
+  ],
+  "license": "GPL-3.0",
+  "name": "node-red-contrib-miio-roborock",
+  "node-red": {
+    "nodes": {
+      "event": "nodes/event.js",
+      "command": "nodes/command.js",
+      "server": "nodes/server.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andreypopov/node-red-contrib-miio-roborock"
+  },
+  "version": "0.0.1"
+}
+
