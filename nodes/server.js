@@ -64,6 +64,15 @@ module.exports = function (RED) {
                     token: node.config.token
                 }).then(device => {
                     node.device = device;
+
+                    node.device.on('thing:initialized', () => {
+                        node.log('Miio Roborock: Initialized');
+                    });
+
+                    node.device.on('thing:destroyed', () => {
+                        node.log('Miio Roborock: Destroyed');
+                    });
+
                     resolve(device);
 
                 }).catch(err => {
@@ -95,6 +104,11 @@ module.exports = function (RED) {
                                     if ('state' in result && parseInt(result.state) > 0 && result.state in MiioRoborockVocabulary.states) {
                                         result.state = MiioRoborockVocabulary.states[result.state];
                                     }
+                                    if ('battery' in result) { result['batteryLevel'] = result['battery']; delete(result['battery']); }
+                                    if ('fan_power' in result) { result['fanSpeed'] = result['fan_power']; delete(result['fan_power']); }
+                                    if ('clean_time' in result) { result['cleanTime'] = result['clean_time']; delete(result['clean_time']); }
+                                    if ('clean_area' in result) { result['cleanArea'] = result['clean_area']; delete(result['clean_area']); }
+
 
                                     for (var key in result) {
                                         var value = result[key];
