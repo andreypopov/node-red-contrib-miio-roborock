@@ -52,7 +52,10 @@ module.exports = function (RED) {
             var that = this;
             clearInterval(that.refreshStatusTimer);
 
-            if (node.device) node.device.destroy();
+            if (that.device) {
+                that.device.destroy();
+                that.device = null;
+            }
         }
 
         connect() {
