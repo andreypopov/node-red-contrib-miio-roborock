@@ -64,16 +64,12 @@ module.exports = function(RED) {
 
             switch (status.text) {
                 case "cleaning":
+                case "spot-cleaning":
+                case "zone-cleaning":
                     var duration = moment.duration({"seconds":node.server.status.cleanTime});
                     status.text += ' ' + duration.humanize();
                     status.shape = 'ring';
                 break;
-
-
-                case "returning":
-                    status.shape = 'ring';
-                    break;
-
 
                 case "error":
                     status.fill = 'red';
@@ -82,6 +78,8 @@ module.exports = function(RED) {
                 break;
 
                 case "charger-offline":
+                case "charger-error":
+                case "full":
                     status.fill = 'red';
                     status.shape = 'dot';
                     if ("error" in node.server.status && node.server.status.error && "code" in node.server.status.error) {
@@ -89,8 +87,13 @@ module.exports = function(RED) {
                     }
                     break;
 
+                case "returning":
+                case "initiating":
                 case "waiting":
                 case "paused":
+                case "docking":
+                case "shutting-down":
+                case "updating":
                     status.fill = 'yellow';
                     status.shape = 'ring';
                 break;

@@ -81,7 +81,21 @@ module.exports = function (RED) {
                     if (that.device) {
                         that.device.call("get_status", [])
                             .then(result => {
+
+                                var initProps = result[0];
                                 that.device.loadProperties(Object.keys(result[0])).then(result => {
+
+                                    //support for unsupported devices
+                                    for (var key in initProps) {
+                                        if (!(key in result)) {
+                                            result[key] = initProps[key];
+                                        }
+                                    }
+                                    //add correct state
+                                    if ('state' in result && parseInt(result.state) > 0 && result.state in MiioRoborockVocabulary.states) {
+                                        result.state = MiioRoborockVocabulary.states[result.state];
+                                    }
+
                                     for (var key in result) {
                                         var value = result[key];
                                         if (key in that.status) {
