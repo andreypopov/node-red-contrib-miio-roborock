@@ -1,6 +1,6 @@
-const miio = require('miio');
+var NODE_PATH = '/miio-roborock/';
+const MiioRoborockVocabulary = require('./lib/miio-roborock-vocabulary.js');
 
-var NODE_PATH = '/miioroborock/';
 
 module.exports = function (RED) {
     /**
@@ -25,14 +25,9 @@ module.exports = function (RED) {
     });
 
     RED.httpAdmin.get(NODE_PATH + 'getCommands', function (req, res) {
-        var config = req.query;
-        var node = RED.nodes.getNode(config.nodeID);
-        if (node && node.constructor.name === "xiaomiRoborockCommand") {
-            res.json(node.getCommands());
-        } else {
-            res.status(404).end();
-        }
+        res.json(MiioRoborockVocabulary.commands);
     });
+
     // RED.httpAdmin.get(NODE_PATH + 'find', function (req, res) {
     //     var config = req.query;
     //     var controller = RED.nodes.getNode(config.controllerID);

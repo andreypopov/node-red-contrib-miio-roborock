@@ -1,5 +1,5 @@
 <script type="text/x-red" data-template-name="miio-roborock-command">
-    <link rel="stylesheet" href="miioroborock/static/css/bootstrap-multiselect.css" type="text/css" />
+    <link rel="stylesheet" href="miio-roborock/static/css/bootstrap-multiselect.css" type="text/css" />
 
     <div class="form-row">
         <label for="node-input-name" class="l-width"><i class="icon-tag"></i> <span data-i18n="label.name"></span></label>
@@ -19,6 +19,7 @@
         <input type="text" id="node-input-payload" style="width:70%">
         <input type="hidden" id="node-input-payloadType">
     </div>
+    <div id="node-input-command-tips" class="form-tips"></div>
 </script>
 
 <script type='text/javascript'>
@@ -67,9 +68,23 @@
         oneditprepare: function () {
             var node = this;
 
+            var $commandInput = $('#node-input-command');
+            var $commandTypeInput = $('#node-input-commandType');
+            var $payloadInput = $('#node-input-payload');
+            var $payloadTypeInput = $('#node-input-payloadType');
+
+
+            $('#node-input-payload').typedInput({
+                types: ['msg', 'flow', 'global', 'str', 'num', 'date'],
+                default: 'msg',
+                value: 'payload',
+                typeField: $('#node-input-payloadType'),
+            });
+            $('#node-input-payloadType').val('msg');
+
 
             // $eventTypesSelect.children().remove();
-            $.getJSON('miioroborock/getCommands', {
+            $.getJSON('miio-roborock/getCommands', {
                 nodeID: node.id
             }).done(function (data, textStatus, jqXHR) {
                 try {
@@ -78,41 +93,55 @@
                         commands.push({'value':index, 'label':value.name});
                     });
 
-
                     var topicTypes = {
                         value: 'vacuum_cmd',
                         label: 'mi',
                         icon: 'icons/node-red-contrib-miio-roborock/icon-color.png',
                         options: commands
                     };
-                    $('#node-input-command').typedInput({
+                    $commandInput.typedInput({
                         types: [
                             topicTypes,
                             {value:'homekit_cmd',label:'homekit',icon: 'icons/node-red-contrib-miio-roborock/homekit-logo.png',options:['homekit']},
                             'str', 'msg', {value:'object',label:'object',options:['json']}],
                         default: 'msg',
                         value: 'topic',
-                        typeField: $('#node-input-commandType'),
+                        typeField: $commandTypeInput,
                     });
-                    // $('#node-input-command').on('change', function(type, value) {
-                    //     var val = $(this).val();
-                    //
-                    //     if ('toggle' === val) {
-                    //         $('#node-input-payload').closest('.form-row').hide();
-                    //     } else {
-                    //         $('#node-input-payload').closest('.form-row').show();
-                    //     }
-                    // });
+                    $commandTypeInput.val(node.commandType);
 
-                    $('#node-input-payload').typedInput({
+                    $payloadInput.typedInput({
                         types: ['msg', 'flow', 'global', 'str', 'num', 'date'],
                         default: 'msg',
                         value: 'payload',
-                        typeField: $('#node-input-payloadType'),
+                        typeField: $payloadTypeInput,
                     });
-                    $('#node-input-commandType').val(node.commandType);
-                    $('#node-input-payloadType').val(node.payloadType);
+                    $payloadTypeInput.val(node.payloadType);
 
+
+                    onChangeCommand(data, node.command);
+                    $commandInput.on('change', function(type, value) {
+                        onChangeCommand(data, $(this).val());
+                    });
+
+                    function onChangeCommand(data, val) {
+                        var payloadInput = $('#node-input-payload');
+                        var payloadRow = payloadInput.closest('.form-row');
+                        if (data[val].args) {
+                            payloadRow.show();
+
+                            //small hack
+                            payloadInput.typedInput('type','flow');
+                            payloadInput.typedInput('type',node.payloadType);
+                        } else {
+                            payloadRow.hide();
+                        }
+
+                        var $tips = $('#node-input-command-tips');
+                        var link = data[val].link;
+                        $tips.html('<b>Read docs</b>: <a target="_blank" href="'+link+'">'+data[val]['name']+'</a>');
+                        $tips.toggle(!!link);
+                    }
 
                 } catch (error) {
                     console.error('Error #4535');

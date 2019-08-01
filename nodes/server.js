@@ -1,7 +1,6 @@
 const EventEmitter = require('events');
 const miio = require('miio');
-const XiaomiRoborockVacuum = require('../static/js/homebridge-xiaomi-roborock-vacuum.js');
-
+const MiioRoborockVocabulary = require('../lib/miio-roborock-vocabulary.js');
 
 module.exports = function (RED) {
     class ServerNode {
@@ -90,8 +89,8 @@ module.exports = function (RED) {
                                                 if ("error" === key) {
                                                     //get error message
                                                     if (value && "code" in value) {
-                                                        if ("id" + value.code in XiaomiRoborockVacuum.errors) {
-                                                            value.message = XiaomiRoborockVacuum.errors["id" + value.code].description;
+                                                        if ("id" + value.code in MiioRoborockVocabulary.errors) {
+                                                            value.message = MiioRoborockVocabulary.errors["id" + value.code].description;
                                                         }
                                                         that.warn('Miio Roborock error: #' + value.code + ': ' + value.message);
                                                     }
