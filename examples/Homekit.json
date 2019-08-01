@@ -14,8 +14,8 @@
     "model": "Default Model",
     "serialNo": "Default Serial Number",
     "characteristicProperties": "{\n    \"RotationSpeed\":{\n        \"minStep\":1,\n        \"maxValue\":100, \n        \"minValue\":0\n    },\n    \"SwingMode\": {\n        \"maxValue\":1, \n        \"minValue\":0\n    },\n    \"LockPhysicalControls\": {\n        \"maxValue\":1, \n        \"minValue\":0\n    }\n} ",
-    "x": 1000,
-    "y": 640,
+    "x": 960,
+    "y": 660,
     "wires": [
       [
         "a21a6d14.644da"
@@ -37,7 +37,7 @@
     "model": "Default Model",
     "serialNo": "Default Serial Number",
     "characteristicProperties": "{}",
-    "x": 1000,
+    "x": 960,
     "y": 460,
     "wires": [
       []
@@ -53,17 +53,17 @@
     "rules": [
       {
         "t": "eq",
+        "v": "batteryLevel",
+        "vt": "str"
+      },
+      {
+        "t": "eq",
         "v": "charging",
         "vt": "str"
       },
       {
         "t": "eq",
         "v": "state",
-        "vt": "str"
-      },
-      {
-        "t": "eq",
-        "v": "batteryLevel",
         "vt": "str"
       },
       {
@@ -80,18 +80,18 @@
     "checkall": "true",
     "repair": false,
     "outputs": 5,
-    "x": 530,
-    "y": 480,
+    "x": 490,
+    "y": 560,
     "wires": [
+      [
+        "2a34a041.08601"
+      ],
       [
         "b7b96fe2.eacc3"
       ],
       [
         "ca00a86a.f1b638",
         "eb1eacc3.681ae"
-      ],
-      [
-        "2a34a041.08601"
       ],
       [
         "ca4e7253.fba2d"
@@ -110,7 +110,7 @@
     "outputs": 1,
     "noerr": 0,
     "x": 760,
-    "y": 400,
+    "y": 460,
     "wires": [
       [
         "fedf1973.fe1478"
@@ -126,7 +126,7 @@
     "outputs": 1,
     "noerr": 0,
     "x": 750,
-    "y": 520,
+    "y": 400,
     "wires": [
       [
         "fedf1973.fe1478"
@@ -154,8 +154,8 @@
       "dnd_enabled"
     ],
     "outputAtStartup": true,
-    "x": 360,
-    "y": 480,
+    "x": 300,
+    "y": 560,
     "wires": [
       [
         "df5d486d.19d838"
@@ -171,7 +171,7 @@
     "outputs": 1,
     "noerr": 0,
     "x": 760,
-    "y": 460,
+    "y": 520,
     "wires": [
       [
         "fedf1973.fe1478"
@@ -187,7 +187,7 @@
     "outputs": 1,
     "noerr": 0,
     "x": 730,
-    "y": 580,
+    "y": 660,
     "wires": [
       [
         "d51c3511.6ec088"
@@ -205,8 +205,8 @@
     "commandType": "homekit_cmd",
     "payload": "payload",
     "payloadType": "msg",
-    "x": 1140,
-    "y": 640,
+    "x": 1100,
+    "y": 660,
     "wires": [
       [
         "9ded7f83.d181c"
@@ -222,7 +222,7 @@
     "outputs": 1,
     "noerr": 0,
     "x": 760,
-    "y": 640,
+    "y": 720,
     "wires": [
       [
         "d51c3511.6ec088"
@@ -234,11 +234,11 @@
     "type": "function",
     "z": "86138410.5a4068",
     "name": "by state",
-    "func": "var value = msg.payload.value;\n\nmsg.payload = {\n    \"LockPhysicalControls\": value=='returning'?1:0\n}\n\nnode.status({fill:\"green\",shape:\"dot\",text:value})\n\nreturn msg;",
+    "func": "var value = msg.payload.value;\n\nmsg.payload = {\n    \"LockPhysicalControls\": value=='returning'?1:0,\n}\n\nif (value == 'charging') {\n    msg.payload.Active = 0;\n} else if (value == 'cleaning') {\n    msg.payload.Active = 1;\n}\n\nnode.status({fill:\"green\",shape:\"dot\",text:value})\n\nreturn msg;",
     "outputs": 1,
     "noerr": 0,
     "x": 740,
-    "y": 700,
+    "y": 600,
     "wires": [
       [
         "d51c3511.6ec088"
@@ -262,8 +262,8 @@
     "checkall": "true",
     "repair": false,
     "outputs": 1,
-    "x": 1280,
-    "y": 640,
+    "x": 1240,
+    "y": 660,
     "wires": [
       [
         "d6adce26.b9adb"
@@ -281,8 +281,8 @@
     "commandType": "vacuum_cmd",
     "payload": "payload",
     "payloadType": "msg",
-    "x": 1440,
-    "y": 640,
+    "x": 1400,
+    "y": 660,
     "wires": [
       []
     ]
