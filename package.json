@@ -18,7 +18,8 @@
     "node-red",
     "xiaomi",
     "miio",
-    "roborock"
+    "roborock",
+    "vacuum"
   ],
   "license": "GPL-3.0",
   "name": "node-red-contrib-miio-roborock",
@@ -36,3 +37,5 @@
   },
   "version": "0.1.0"
 }
+
+
