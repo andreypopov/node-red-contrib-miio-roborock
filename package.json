@@ -15,6 +15,7 @@
   "description": "Xiaomi Roborock connectivity nodes for node-red",
   "homepage": "https://github.com/andreypopov/node-red-contrib-miio-roborock",
   "keywords": [
+    "node-red",
     "xiaomi",
     "miio",
     "roborock"
