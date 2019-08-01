@@ -114,19 +114,20 @@ module.exports = function (RED) {
                                     resolve(that.status);
                                 }).catch(err => {
                                     console.log('Encountered an error while controlling device');
-                                    console.log('Error was:');
+                                    console.log('Error(1) was:');
                                     console.log(err.message);
                                     reject(err);
                                 });
 
-                            })
-                            .catch(err => {
+                            }).catch(err => {
                                 console.log('Encountered an error while controlling device');
-                                console.log('Error was:');
+                                console.log('Error(2) was:');
                                 console.log(err.message);
+                                that.connect();
                                 reject(err);
                             });
                     } else {
+                        that.connect();
                         reject('No device');
                     }
                 } else {

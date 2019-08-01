@@ -1,0 +1,260 @@
+[
+  {
+    "id": "d51c3511.6ec088",
+    "type": "homekit-service",
+    "z": "86138410.5a4068",
+    "isParent": true,
+    "bridge": "8e4d0c4d.ceb44",
+    "parentService": "",
+    "name": "Vacuum",
+    "serviceName": "Fanv2",
+    "topic": "",
+    "filter": false,
+    "manufacturer": "Default Manufacturer",
+    "model": "Default Model",
+    "serialNo": "Default Serial Number",
+    "characteristicProperties": "{\n    \"RotationSpeed\":{\n        \"minStep\":1,\n        \"maxValue\":100, \n        \"minValue\":0\n    },\n    \"SwingMode\": {\n        \"maxValue\":1, \n        \"minValue\":0\n    }\n} ",
+    "x": 920,
+    "y": 580,
+    "wires": [
+      [
+        "a21a6d14.644da",
+        "f2021d5d.4ed2d"
+      ]
+    ]
+  },
+  {
+    "id": "fedf1973.fe1478",
+    "type": "homekit-service",
+    "z": "86138410.5a4068",
+    "isParent": false,
+    "bridge": "8e4d0c4d.ceb44",
+    "parentService": "d51c3511.6ec088",
+    "name": "Battery",
+    "serviceName": "BatteryService",
+    "topic": "",
+    "filter": false,
+    "manufacturer": "Default Manufacturer",
+    "model": "Default Model",
+    "serialNo": "Default Serial Number",
+    "characteristicProperties": "{}",
+    "x": 1000,
+    "y": 460,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "df5d486d.19d838",
+    "type": "switch",
+    "z": "86138410.5a4068",
+    "name": "state",
+    "property": "payload.key",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "eq",
+        "v": "charging",
+        "vt": "str"
+      },
+      {
+        "t": "eq",
+        "v": "state",
+        "vt": "str"
+      },
+      {
+        "t": "eq",
+        "v": "batteryLevel",
+        "vt": "str"
+      },
+      {
+        "t": "eq",
+        "v": "cleaning",
+        "vt": "str"
+      },
+      {
+        "t": "eq",
+        "v": "fanSpeed",
+        "vt": "str"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 5,
+    "x": 530,
+    "y": 480,
+    "wires": [
+      [
+        "b7b96fe2.eacc3"
+      ],
+      [
+        "ca00a86a.f1b638"
+      ],
+      [
+        "2a34a041.08601"
+      ],
+      [
+        "ca4e7253.fba2d"
+      ],
+      [
+        "6939b50f.81d27c"
+      ]
+    ]
+  },
+  {
+    "id": "b7b96fe2.eacc3",
+    "type": "function",
+    "z": "86138410.5a4068",
+    "name": "ChargingState",
+    "func": "var value = msg.payload.value;\nmsg.payload = {\n    \"ChargingState\": value?1:0\n}\n\nnode.status({fill:value?\"green\":\"red\",shape:\"dot\",text:value?'true':'false'})\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 760,
+    "y": 400,
+    "wires": [
+      [
+        "fedf1973.fe1478"
+      ]
+    ]
+  },
+  {
+    "id": "2a34a041.08601",
+    "type": "function",
+    "z": "86138410.5a4068",
+    "name": "BatteryLevel",
+    "func": "var value = msg.payload.value;\n\nmsg.payload = {\n    \"BatteryLevel\": value,\n    \"StatusLowBattery\": value < 15 ? 1 : 0\n}\n\nnode.status({fill:value < 15?\"red\":\"green\",shape:\"dot\",text:value+'%'})\n\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 750,
+    "y": 520,
+    "wires": [
+      [
+        "fedf1973.fe1478"
+      ]
+    ]
+  },
+  {
+    "id": "5488340a.3a740c",
+    "type": "miio-roborock-event",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "eventTypes": [
+      "state",
+      "batteryLevel",
+      "cleanTime",
+      "cleanArea",
+      "error",
+      "map_present",
+      "in_cleaning",
+      "in_returning",
+      "in_fresh_state",
+      "lab_status",
+      "fanSpeed",
+      "dnd_enabled"
+    ],
+    "outputAtStartup": true,
+    "x": 360,
+    "y": 480,
+    "wires": [
+      [
+        "f2021d5d.4ed2d",
+        "df5d486d.19d838"
+      ]
+    ]
+  },
+  {
+    "id": "ca00a86a.f1b638",
+    "type": "function",
+    "z": "86138410.5a4068",
+    "name": "ChargingState",
+    "func": "var value = msg.payload.value;\nmsg.payload = {\n    \"ChargingState\": value=='charging'?1:0\n}\n\nnode.status({fill:value?\"green\":\"red\",shape:\"dot\",text:value?'true':'false'})\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 760,
+    "y": 460,
+    "wires": [
+      [
+        "fedf1973.fe1478"
+      ]
+    ]
+  },
+  {
+    "id": "ca4e7253.fba2d",
+    "type": "function",
+    "z": "86138410.5a4068",
+    "name": "On",
+    "func": "var value = msg.payload.value;\nvar characteristic = {};\n\n\ncharacteristic.On = value;\ncharacteristic.RotationSpeed = msg.status.fanSpeed;\ncharacteristic.SwingMode = msg.status.fanSpeed==105;\n\n\nmsg.payload = characteristic;\n\nnode.status({fill:value?\"green\":\"red\",shape:\"dot\",text:value?'true':'false'})\n\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 730,
+    "y": 580,
+    "wires": [
+      [
+        "d51c3511.6ec088"
+      ]
+    ]
+  },
+  {
+    "id": "a21a6d14.644da",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "homekit",
+    "command": "homekit",
+    "commandType": "homekit_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "x": 1100,
+    "y": 580,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "6939b50f.81d27c",
+    "type": "function",
+    "z": "86138410.5a4068",
+    "name": "RotationSpeed",
+    "func": "var value = msg.payload.value;\nvar characteristic = {};\n\n\ncharacteristic.RotationSpeed = msg.status.fanSpeed;\ncharacteristic.SwingMode = msg.status.fanSpeed==105;\n\n\nmsg.payload = characteristic;\n\nnode.status({fill:\"green\",shape:\"dot\",text:value});\n\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 760,
+    "y": 640,
+    "wires": [
+      [
+        "d51c3511.6ec088"
+      ]
+    ]
+  },
+  {
+    "id": "8e4d0c4d.ceb44",
+    "type": "homekit-bridge",
+    "z": "",
+    "bridgeName": "Node-Red-macos2",
+    "pinCode": "111-11-111",
+    "port": "",
+    "allowInsecureRequest": false,
+    "manufacturer": "Default Manufacturer",
+    "model": "Default Model",
+    "serialNo": "Default Serial Number",
+    "customMdnsConfig": false,
+    "mdnsMulticast": true,
+    "mdnsInterface": "",
+    "mdnsPort": "",
+    "mdnsIp": "",
+    "mdnsTtl": "",
+    "mdnsLoopback": true,
+    "mdnsReuseAddr": true
+  },
+  {
+    "id": "a5093fc7.a6ab8",
+    "type": "miio-roborock-server",
+    "z": "",
+    "name": "Vaccum",
+    "ip": "192.168.1.18",
+    "token": "6c5469443267644b756c7a4f58763965",
+    "polling": "10"
+  }
+]

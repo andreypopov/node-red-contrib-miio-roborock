@@ -72,9 +72,14 @@ module.exports = function(RED) {
                         }
                         break;
 
-                    // case 'homekit':
-                    //     payload = node.formatHomeKit(message, payload);
-                    //     break;
+                    case 'homekit_cmd':
+                        var fromHomekit = node.formatHomeKit(message, payload);
+                        console.log(fromHomekit);
+                        if ('payload' in fromHomekit) {
+                            payload = fromHomekit['payload'];
+                            command = fromHomekit['command'];
+                        }
+                        break;
 
                     case 'str':
                     default: {
@@ -88,6 +93,9 @@ module.exports = function(RED) {
                     return false;
                 }
 
+                if (typeof(payload) !== 'object') {
+                    payload = [payload];
+                }
 
                 var device = node.server.device;
                 device.call(command, payload).then(result => {
@@ -97,7 +105,7 @@ module.exports = function(RED) {
                     console.log('Encountered an error while controlling device');
                     console.log('Error was:');
                     console.log(err.message);
-                    node.send( {request: { command: node.command, args: node.args, jobid: node.jobid }, err: err } );
+                    node.send( {request: { command: command, args: payload }, err: err } );
                 });
 
 
@@ -105,6 +113,32 @@ module.exports = function(RED) {
             });
 
 
+        }
+
+        formatHomeKit(message, payload) {
+            if (message.hap.context === undefined) {
+                return null;
+            }
+
+
+            var msg = {};
+
+            if (payload.RotationSpeed !== undefined) {
+                msg['command'] = 'set_custom_mode';
+                msg['payload'] = [payload.RotationSpeed];
+            } else if (payload.Active !== undefined) {
+                msg['command'] = payload.Active?'app_start':'app_stop';
+                msg['payload'] = [];
+            } else if (payload.On !== undefined) {
+                msg['command'] = payload.On ? 'app_start' : 'app_stop';
+                msg['payload'] = [];
+            } else if (payload.SwingMode !== undefined) {
+                msg['command'] = 'set_custom_mode';
+                msg['payload'] = payload.SwingMode?[105]:[100];
+            }
+
+
+            return msg;
         }
 
         getCommands() {
