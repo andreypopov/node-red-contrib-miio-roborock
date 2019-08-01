@@ -19,7 +19,9 @@
         <input type="text" id="node-input-payload" style="width:70%">
         <input type="hidden" id="node-input-payloadType">
     </div>
-    <div id="node-input-command-tips" class="form-tips"></div>
+    <div id="node-input-command-tips-wr">
+        <div id="node-input-command-tips" class="form-tips"></div>
+    </div>
 </script>
 
 <script type='text/javascript'>
@@ -88,6 +90,7 @@
                 nodeID: node.id
             }).done(function (data, textStatus, jqXHR) {
                 try {
+                    node.commands = data;
                     var commands = [];
                     $.each(data, function(index, value) {
                         commands.push({'value':index, 'label':value.name});
@@ -119,15 +122,27 @@
                     $payloadTypeInput.val(node.payloadType);
 
 
-                    onChangeCommand(data, node.command);
+
                     $commandInput.on('change', function(type, value) {
-                        onChangeCommand(data, $(this).val());
+                        $('#node-input-payload').closest('.form-row').show();
+                        $commandTypeInput.trigger('change');
+
+                        $('#node-input-command-tips-wr').toggle($('#node-input-commandType').val() === 'vacuum_cmd');
                     });
 
-                    function onChangeCommand(data, val) {
+                    onChangeCommand();
+                    $commandTypeInput.on('change', function(type, value) {
+                        onChangeCommand();
+                    });
+
+                    function onChangeCommand() {
+                        var val = $('#node-input-command').val();
+                        if (!(val in node.commands)) return false;
+
                         var payloadInput = $('#node-input-payload');
                         var payloadRow = payloadInput.closest('.form-row');
-                        if (data[val].args) {
+
+                        if (node.commands[val].args) {
                             payloadRow.show();
 
                             //small hack
@@ -138,9 +153,13 @@
                         }
 
                         var $tips = $('#node-input-command-tips');
-                        var link = data[val].link;
-                        $tips.html('<b>Read docs</b>: <a target="_blank" href="'+link+'">'+data[val]['name']+'</a>');
-                        $tips.toggle(!!link);
+                        var link = node.commands[val].link;
+                        if (link) {
+                            $tips.html('<b>' + RED._("node-red-contrib-miio-roborock/command:tips.read_docs") + '</b>: <a target="_blank" href="' + link + '">' + data[val]['name'] + '</a>');
+                            $tips.show();
+                        } else {
+                            $tips.hide();
+                        }
                     }
 
                 } catch (error) {
