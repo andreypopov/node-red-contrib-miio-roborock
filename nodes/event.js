@@ -107,7 +107,7 @@ module.exports = function(RED) {
                         status.fill = 'green';
                     }
 
-                    status.shape = node.server.status.batteryLevel<95?'ring':'dot';
+                    status.shape = node.server.status.batteryLevel>=100?'dot':'ring';
                 break;
             }
 

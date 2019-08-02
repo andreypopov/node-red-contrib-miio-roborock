@@ -46,11 +46,20 @@ module.exports = function(RED) {
                         break;
                     }
 
+                    case 'num': {
+                        payload = parseInt(node.config.payload);
+                        break;
+                    }
+
+                    case 'str': {
+                        payload = node.config.payload;
+                        break;
+                    }
+
+                    case 'vacuum_payload':
                     case 'object':
                     case 'homekit':
                     case 'msg':
-                    case 'num':
-                    case 'str':
                     default: {
                         payload = message[node.config.payload];
                         break;
@@ -66,10 +75,35 @@ module.exports = function(RED) {
                     case 'vacuum_cmd':
                         command = node.config.command;
                         switch (command) {
+                            case "app_start_wet":
+                                command = ["set_custom_mode", "app_start"];
+                                payload = [[105], []];
+                            break;
+
+                            case "app_stop_dock":
+                                command = ["app_stop", "app_charge"];
+                                payload = [[], []];
+                            break;
+
+                            case "app_zoned_clean":
+                                if (node.config.payloadType === 'vacuum_payload') {
+                                    payload = JSON.parse((node.config.coordinates).replace(/\s+/g, " "));
+                                }
+                                break;
+
+                            case "set_custom_mode":
+                                if (node.config.payloadType === 'vacuum_payload') {
+                                    payload = parseInt((node.config.fan_speed));
+                                    if (payload > 100 || isNaN(payload)) payload = 100;
+                                    if (payload < 0) payload = 0;
+                                }
+                                break;
+
                             default: {
                                 break;
                             }
                         }
+
                         break;
 
                     case 'homekit_cmd':
@@ -98,18 +132,48 @@ module.exports = function(RED) {
                     payload = [payload];
                 }
 
+
                 var device = node.server.device;
-                device.call(command, payload).then(result => {
-                    node.send( {request: { command: command, args: payload }, payload: result } );
-                })
-                .catch(err => {
-                    console.log('Encountered an error while controlling device');
-                    console.log('Error was (3):');
-                    console.log(err.message);
-                    console.log('command'+command);
-                    console.log(payload);
-                    node.send( {request: { command: command, args: payload }, err: err } );
-                });
+
+                if (typeof(command) === 'object') {
+                    for (var key in command) {
+                        var commandVal = command[key];
+                        var payloadVal = payload[key];
+
+                        // console.log('BEFORE SEND ARRAY:');
+                        // console.log({command:commandVal,payload:payloadVal});
+                        // break;
+
+
+                        device.call(commandVal, payloadVal).then(result => {
+                            node.send({request: {command: commandVal, args: payloadVal}, payload: result});
+                        }).catch(err => {
+                            console.log('Encountered an error while controlling device');
+                            console.log('Error was (3):');
+                            console.log(err.message);
+                            console.log('command' + commandVal);
+                            console.log(payloadVal);
+                            node.send({request: {command: commandVal, args: payloadVal}, err: err});
+                        });
+                    }
+                } else {
+
+                    // console.log('BEFORE SEND:');
+                    // console.log({command:command,payload:payload});
+                    // return false;
+
+
+                    device.call(command, payload).then(result => {
+                        node.send({request: {command: command, args: payload}, payload: result});
+                    }).catch(err => {
+                        console.log('Encountered an error while controlling device');
+                        console.log('Error was (3):');
+                        console.log(err.message);
+                        console.log('command' + command);
+                        console.log(payload);
+                        node.send({request: {command: command, args: payload}, err: err});
+                    });
+                }
 
 
 

@@ -4,10 +4,13 @@
         "server": "Device",
         "command": "Command",
         "payload": "Payload",
-        "options": "Options"
+        "options": "Options",
+        "coordinates": "Coordinates",
+        "fan_speed_percent": "Speed, %"
     },
     "placeholder": {
-        "name": "Name"
+        "name": "Name",
+        "fan_speed": "0-100"
     },
     "tips": {
         "read_docs": "Read docs"

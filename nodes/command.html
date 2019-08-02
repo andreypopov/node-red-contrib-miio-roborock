@@ -19,9 +19,40 @@
         <input type="text" id="node-input-payload" style="width:70%">
         <input type="hidden" id="node-input-payloadType">
     </div>
+
+    <div class="form-row node-input-rule-container-row">
+        <ol id="node-input-rule-container"></ol>
+    </div>
+    <hr>
+
+    <!--app_zoned_clean-->
+    <div class="form-row command_options command_options__app_zoned_clean">
+        <label for="node-input-coordinates" class="l-width" style="vertical-align:top;"><span data-i18n="label.coordinates"></span></label>
+        <textarea id="node-input-coordinates" style="width:70%;min-height:70px;height:95px;resize:vertical;"></textarea>
+        <hr>
+    </div>
+     <!--set_custom_mode-->
+    <div class="form-row command_options command_options__set_custom_mode">
+        <label for="node-input-fan_speed" class="l-width"><span data-i18n="label.fan_speed_percent"></span></label>
+        <input type="number" id="node-input-fan_speed" data-i18n="[placeholder]placeholder.fan_speed">
+        <hr>
+    </div>
+
     <div id="node-input-command-tips-wr">
+        <!--app_zoned_clean-->
+        <div class="form-tips command_tips command_tips__app_zoned_clean">
+            A zone consists of a list of 5 integer values. The first four define the rectangle in map coordinates and the last integer defines the times this zone should be cleaned.<br>
+            <b>Example:</b><br><code>[<br>&nbsp;&nbsp;&nbsp;[26234,26042,27284,26642,1],<br>&nbsp;&nbsp;&nbsp;[26234,26042,27284,26642,1]<br>]</code>
+        </div>
+        <!--set_custom_mode-->
+        <div class="form-tips command_tips command_tips__set_custom_mode">
+            This command sets the fan level during the cleaning process. <br>
+            <b>Example:</b><br><code>50</code>
+        </div>
+
         <div id="node-input-command-tips" class="form-tips"></div>
     </div>
+    <br><br>
 </script>
 
 <script type='text/javascript'>
@@ -50,6 +81,12 @@
             },
             payloadType: {
                 value: 'msg',
+            },
+            coordinates: {
+                value: null,
+            },
+            fan_speed: {
+                value: 100,
             }
         },
         inputs: 1,
@@ -70,19 +107,13 @@
         oneditprepare: function () {
             var node = this;
 
+
+
             var $commandInput = $('#node-input-command');
             var $commandTypeInput = $('#node-input-commandType');
             var $payloadInput = $('#node-input-payload');
             var $payloadTypeInput = $('#node-input-payloadType');
 
-
-            $('#node-input-payload').typedInput({
-                types: ['msg', 'flow', 'global', 'str', 'num', 'date'],
-                default: 'msg',
-                value: 'payload',
-                typeField: $('#node-input-payloadType'),
-            });
-            $('#node-input-payloadType').val('msg');
 
 
             // $eventTypesSelect.children().remove();
@@ -113,8 +144,15 @@
                     });
                     $commandTypeInput.val(node.commandType);
 
+
+                    var payloadTypes = {
+                        value: 'vacuum_payload',
+                        label: 'mi',
+                        icon: 'icons/node-red-contrib-miio-roborock/icon-color.png',
+                        options: [{'value':'arguments', 'label':'Enter arguments'}]
+                    };
                     $payloadInput.typedInput({
-                        types: ['msg', 'flow', 'global', 'str', 'num', 'date'],
+                        types: [payloadTypes, 'msg', 'flow', 'global', 'str', 'num', 'date'],
                         default: 'msg',
                         value: 'payload',
                         typeField: $payloadTypeInput,
@@ -123,44 +161,98 @@
 
 
 
-                    $('#node-input-command-tips').hide();
+
+
                     $commandInput.on('change', function(type, value) {
-                        $('#node-input-payload').closest('.form-row').show();
-                        $commandTypeInput.trigger('change');
+                        console.log('====>$commandInput');
+                        onChange();
 
-                        $('#node-input-command-tips-wr').toggle($('#node-input-commandType').val() === 'vacuum_cmd');
+                    });
+                    $payloadInput.on('change', function(type, value) {
+                        console.log('====>$payloadInput');
+                        onChange();
                     });
 
-                    onChangeCommand();
-                    $commandTypeInput.on('change', function(type, value) {
-                        onChangeCommand();
-                    });
+                    onChange();
+
+                    function onChange() {
+                        var $commandInput = $('#node-input-command');
+                        var command = $commandInput.val();
+                        var $commandTypeInput = $('#node-input-commandType');
+                        var $payloadInput = $('#node-input-payload');
+                        var $payloadRow = $payloadInput.closest('.form-row');
+                        var $payloadTypeInput = $('#node-input-payloadType');
+
+                        console.log('$commandInput: ', $commandInput.val());
+                        console.log('$commandTypeInput: ', $commandTypeInput.val());
+                        console.log('$payloadInput: ', $payloadInput.val());
+                        console.log('$payloadTypeInput: ', $payloadTypeInput.val());
+
+                        //show payload row
+                        if ($commandTypeInput.val() === 'vacuum_cmd') {
+                            if (node.commands[command].args) {
+                                $payloadRow.show();
+                            } else {
+                                $payloadRow.hide();
+                            }
+                        } else {
+                            $payloadRow.show();
+                            $payloadInput.typedInput('width'); //small hack
+                        }
+
+
+                        //show arguments
+                        $('.command_options').hide();
+                        if ($payloadTypeInput.val() === 'vacuum_payload' && $payloadInput.val() === 'arguments') {
+                        // if ($commandTypeInput.val() === 'vacuum_cmd') {
+                             $('.command_options__'+command).show();
+                        }
+
+                        //show tips
+                        var $tips = $('#node-input-command-tips');
+                        var $tipsWr = $('#node-input-command-tips-wr');
+                        $('.command_tips').hide();
+
+                        $tips.hide();
+                        $tipsWr.hide();
+                        if ($commandTypeInput.val() === 'vacuum_cmd') {
+                            $tipsWr.show();
+                            $('.command_tips__'+command).show();
+
+                            var link = node.commands[command].link;
+                            if (link) {
+                                $tips.html('<b>' + RED._("node-red-contrib-miio-roborock/command:tips.read_docs") + '</b>: <a target="_blank" href="' + link + '">' + data[command]['name'] + '</a>');
+                                $tips.show();
+                            }
+                        }
+
+                    }
 
                     function onChangeCommand() {
-                        var val = $('#node-input-command').val();
-                        if (!(val in node.commands)) return false;
-
-                        var payloadInput = $('#node-input-payload');
-                        var payloadRow = payloadInput.closest('.form-row');
-
-                        if (node.commands[val].args) {
-                            payloadRow.show();
-
-                            //small hack
-                            payloadInput.typedInput('type','flow');
-                            payloadInput.typedInput('type',node.payloadType);
-                        } else {
-                            payloadRow.hide();
-                        }
-
-                        var $tips = $('#node-input-command-tips');
-                        var link = node.commands[val].link;
-                        if (link) {
-                            $tips.html('<b>' + RED._("node-red-contrib-miio-roborock/command:tips.read_docs") + '</b>: <a target="_blank" href="' + link + '">' + data[val]['name'] + '</a>');
-                            $tips.show();
-                        } else {
-                            $tips.hide();
-                        }
+                        // var val = $('#node-input-command').val();
+                        // if (!(val in node.commands)) return false;
+                        //
+                        // var payloadInput = $('#node-input-payload');
+                        // var payloadRow = payloadInput.closest('.form-row');
+                        //
+                        // if (node.commands[val].args) {
+                        //     payloadRow.show();
+                        //
+                        //     //small hack
+                        //     payloadInput.typedInput('type','timestamp');
+                        //     payloadInput.typedInput('type',node.payloadType);
+                        // } else {
+                        //     payloadRow.hide();
+                        // }
+                        //
+                        // var $tips = $('#node-input-command-tips');
+                        // var link = node.commands[val].link;
+                        // if (link) {
+                        //     $tips.html('<b>' + RED._("node-red-contrib-miio-roborock/command:tips.read_docs") + '</b>: <a target="_blank" href="' + link + '">' + data[val]['name'] + '</a>');
+                        //     $tips.show();
+                        // } else {
+                        //     $tips.hide();
+                        // }
                     }
 
                 } catch (error) {

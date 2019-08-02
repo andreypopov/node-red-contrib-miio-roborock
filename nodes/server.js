@@ -67,6 +67,7 @@ module.exports = function (RED) {
                     token: node.config.token
                 }).then(device => {
                     node.device = device;
+                    node.device.updateMaxPollFailures(0);
 
                     node.device.on('thing:initialized', () => {
                         node.log('Miio Roborock: Initialized');
