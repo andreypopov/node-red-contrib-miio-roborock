@@ -173,12 +173,12 @@
 
 
                     $commandInput.on('change', function(type, value) {
-                        console.log('====>$commandInput');
+                        // console.log('====>$commandInput');
                         onChange();
 
                     });
                     $payloadInput.on('change', function(type, value) {
-                        console.log('====>$payloadInput');
+                        // console.log('====>$payloadInput');
                         onChange();
                     });
 
@@ -192,10 +192,10 @@
                         var $payloadRow = $payloadInput.closest('.form-row');
                         var $payloadTypeInput = $('#node-input-payloadType');
 
-                        console.log('$commandInput: ', $commandInput.val());
-                        console.log('$commandTypeInput: ', $commandTypeInput.val());
-                        console.log('$payloadInput: ', $payloadInput.val());
-                        console.log('$payloadTypeInput: ', $payloadTypeInput.val());
+                        // console.log('$commandInput: ', $commandInput.val());
+                        // console.log('$commandTypeInput: ', $commandTypeInput.val());
+                        // console.log('$payloadInput: ', $payloadInput.val());
+                        // console.log('$payloadTypeInput: ', $payloadTypeInput.val());
 
                         //show payload row
                         if ($commandTypeInput.val() === 'vacuum_cmd') {
@@ -239,33 +239,6 @@
                             }
                         }
 
-                    }
-
-                    function onChangeCommand() {
-                        // var val = $('#node-input-command').val();
-                        // if (!(val in node.commands)) return false;
-                        //
-                        // var payloadInput = $('#node-input-payload');
-                        // var payloadRow = payloadInput.closest('.form-row');
-                        //
-                        // if (node.commands[val].args) {
-                        //     payloadRow.show();
-                        //
-                        //     //small hack
-                        //     payloadInput.typedInput('type','timestamp');
-                        //     payloadInput.typedInput('type',node.payloadType);
-                        // } else {
-                        //     payloadRow.hide();
-                        // }
-                        //
-                        // var $tips = $('#node-input-command-tips');
-                        // var link = node.commands[val].link;
-                        // if (link) {
-                        //     $tips.html('<b>' + RED._("node-red-contrib-miio-roborock/command:tips.read_docs") + '</b>: <a target="_blank" href="' + link + '">' + data[val]['name'] + '</a>');
-                        //     $tips.show();
-                        // } else {
-                        //     $tips.hide();
-                        // }
                     }
 
                 } catch (error) {

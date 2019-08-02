@@ -88,6 +88,7 @@ module.exports = function(RED) {
                     break;
 
                 case "returning":
+                case "coordinates":
                 case "initiating":
                 case "waiting":
                 case "paused":

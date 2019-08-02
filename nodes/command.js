@@ -85,6 +85,11 @@ module.exports = function(RED) {
                                 payload = [[], []];
                             break;
 
+                            case "app_start":
+                            case "app_stop":
+                                payload = [];
+                                break;
+
                             case "app_zoned_clean":
                                 if (node.config.payloadType === 'vacuum_payload') {
                                     payload = JSON.parse((node.config.coordinates).replace(/\s+/g, " "));

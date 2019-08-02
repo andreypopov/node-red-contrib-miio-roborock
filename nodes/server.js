@@ -97,7 +97,6 @@ module.exports = function (RED) {
 
                                 var initProps = result[0];
                                 that.device.loadProperties(Object.keys(result[0])).then(result => {
-
                                     //support for unsupported devices
                                     for (var key in initProps) {
                                         if (!(key in result)) {
@@ -105,8 +104,8 @@ module.exports = function (RED) {
                                         }
                                     }
                                     //add correct state
-                                    if ('state' in result && parseInt(result.state) > 0 && result.state in MiioRoborockVocabulary.states) {
-                                        result.state = MiioRoborockVocabulary.states[result.state];
+                                    if (initProps.state in MiioRoborockVocabulary.states) {
+                                        result.state = MiioRoborockVocabulary.states[initProps.state];
                                     }
                                     if ('battery' in result) { result['batteryLevel'] = result['battery']; delete(result['battery']); }
                                     if ('fan_power' in result) { result['fanSpeed'] = result['fan_power']; delete(result['fan_power']); }
