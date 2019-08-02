@@ -38,6 +38,12 @@
         <hr>
     </div>
 
+    <div class="form-row homekit_options">
+        <label for='node-input-homekit_stop_to_dock' class="l-width"><i class='fa fa-share-square'></i> <span data-i18n="label.homekit_stop"></span></label>
+        <input type="checkbox" id="node-input-homekit_stop_to_dock" checked="checked" style="display: inline-block; width: auto; vertical-align: top;"> <span data-i18n="label.homekit_stop_help"></span></input>
+        <hr>
+    </div>
+
     <div id="node-input-command-tips-wr">
         <!--app_zoned_clean-->
         <div class="form-tips command_tips command_tips__app_zoned_clean">
@@ -87,6 +93,9 @@
             },
             fan_speed: {
                 value: 100,
+            },
+            homekit_stop_to_dock: {
+                value: false,
             }
         },
         inputs: 1,
@@ -199,6 +208,10 @@
                             $payloadRow.show();
                             $payloadInput.typedInput('width'); //small hack
                         }
+
+
+                        //show homekit options
+                        $('.homekit_options').toggle($commandTypeInput.val() === 'homekit_cmd');
 
 
                         //show arguments

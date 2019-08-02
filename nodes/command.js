@@ -111,6 +111,11 @@ module.exports = function(RED) {
                         if (fromHomekit && 'payload' in fromHomekit) {
                             payload = fromHomekit['payload'];
                             command = fromHomekit['command'];
+
+                            if ('app_stop' === command && node.config.homekit_stop_to_dock) {
+                                command = ["app_stop", "app_charge"];
+                                payload = [[], []];
+                            }
                         } else {
                             payload = command = null;
                         }

@@ -6,7 +6,9 @@
         "payload": "Payload",
         "options": "Options",
         "coordinates": "Coordinates",
-        "fan_speed_percent": "Speed, %"
+        "fan_speed_percent": "Speed, %",
+        "homekit_stop": "On Stop",
+        "homekit_stop_help": "Go to dock"
     },
     "placeholder": {
         "name": "Name",
