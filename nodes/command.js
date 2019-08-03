@@ -1,4 +1,4 @@
-const miio = require('miio');
+const MiioRoborockVocabulary = require('../lib/miio-roborock-vocabulary.js');
 
 module.exports = function(RED) {
     class xiaomiRoborockCommand {
@@ -56,8 +56,12 @@ module.exports = function(RED) {
                         break;
                     }
 
+                    case 'object': {
+                        payload = node.config.payload;
+                        break;
+                    }
+
                     case 'vacuum_payload':
-                    case 'object':
                     case 'homekit':
                     case 'msg':
                     default: {
@@ -74,21 +78,24 @@ module.exports = function(RED) {
                     }
                     case 'vacuum_cmd':
                         command = node.config.command;
+                        if (command in MiioRoborockVocabulary.commands && !MiioRoborockVocabulary.commands[command].args) {
+                            payload = [];
+                        }
                         switch (command) {
                             case "app_start_wet":
                                 command = ["set_custom_mode", "app_start"];
                                 payload = [[105], []];
                             break;
 
+                            case "app_wet":
+                                command = "set_custom_mode";
+                                payload = [105];
+                                break;
+
                             case "app_stop_dock":
                                 command = ["app_stop", "app_charge"];
                                 payload = [[], []];
                             break;
-
-                            case "app_start":
-                            case "app_stop":
-                                payload = [];
-                                break;
 
                             case "app_zoned_clean":
                                 if (node.config.payloadType === 'vacuum_payload') {
@@ -133,63 +140,60 @@ module.exports = function(RED) {
                     }
                 }
 
-                //empty payload, stop
-                if (payload === null) {
-                    return false;
-                }
-
-                if (payload && typeof(payload) !== 'object') {
-                    payload = [payload];
-                }
-
-
-                var device = node.server.device;
 
                 if (typeof(command) === 'object') {
                     for (var key in command) {
-                        var commandVal = command[key];
-                        var payloadVal = payload[key];
-
-                        // console.log('BEFORE SEND ARRAY:');
-                        // console.log({command:commandVal,payload:payloadVal});
-                        // break;
-
-
-                        device.call(commandVal, payloadVal).then(result => {
-                            node.send({request: {command: commandVal, args: payloadVal}, payload: result});
-                        }).catch(err => {
-                            console.log('Encountered an error while controlling device');
-                            console.log('Error was (3):');
-                            console.log(err.message);
-                            console.log('command' + commandVal);
-                            console.log(payloadVal);
-                            node.send({request: {command: commandVal, args: payloadVal}, err: err});
-                        });
+                        node.sendCommand(command[key], payload[key]);
                     }
                 } else {
-
-                    // console.log('BEFORE SEND:');
-                    // console.log({command:command,payload:payload});
-                    // return false;
-
-
-                    device.call(command, payload).then(result => {
-                        node.send({request: {command: command, args: payload}, payload: result});
-                    }).catch(err => {
-                        console.log('Encountered an error while controlling device');
-                        console.log('Error was (3):');
-                        console.log(err.message);
-                        console.log('command' + command);
-                        console.log(payload);
-                        node.send({request: {command: command, args: payload}, err: err});
-                    });
+                    node.sendCommand(command, payload);
                 }
-
-
-
             });
+        }
+
+        sendCommand(command, payload) {
+            var node = this;
+            var device = node.server.device;
 
 
+            if (command === null) return false;
+            if (payload === undefined) payload = [];
+            if (payload && typeof(payload) !== 'object') payload = [payload];
+
+            // console.log('BEFORE SEND:');
+            // console.log({command:command,payload:payload});
+
+            return device.call(command, payload).then(result => {
+                var status = {
+                    fill: "green",
+                    shape: "dot",
+                    text: command
+                };
+
+                var sendPayload = result;
+                if (Object.keys(result).length === 1 && (typeof(result[0]) === 'string' || typeof(result[0]) === 'number')) {
+                    status.text += ': '+result[0];
+                    sendPayload = result[0];
+                }
+                node.status(status);
+                node.cleanTimer = setTimeout(function(){
+                    node.status({});
+                }, 3000);
+
+
+                node.send({request: {command: command, payload: payload}, payload: sendPayload});
+            }).catch(err => {
+                node.warn("Miio Roborock error on command '"+command+"': "+err.message);
+                node.send({request: {command: command, args: payload}, error: err});
+                node.status({
+                    fill: "red",
+                    shape: "dot",
+                    text: "node-red-contrib-miio-roborock/command:status.error"
+                });
+                node.cleanTimer = setTimeout(function(){
+                    node.status({});
+                }, 3000);
+            });
         }
 
         formatHomeKit(message, payload) {

@@ -113,7 +113,9 @@ module.exports = function(RED) {
             }
 
             //add battery level
-            status.text += ' ('+node.server.status.batteryLevel+'%)';
+            if ("batteryLevel" in node.server.status) {
+                status.text += ' (' + node.server.status.batteryLevel + '%)';
+            }
 
             node.status(status);
         }

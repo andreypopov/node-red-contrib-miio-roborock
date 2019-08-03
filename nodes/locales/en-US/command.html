@@ -1,16 +1,25 @@
 <script type="text/x-red" data-help-name="miio-roborock-command">
+    <p>Control your vacuum with commands</p>
     <p>Command</p>
 
     <h3>Configuration</h3>
     <dl class="message-properties">
         <dt class="optional">Name <span class="property-type">string</span></dt><dd>Provide a custom name for this node.</dd>
-        <dt>Server <span class="property-type">object</span></dt><dd>Choose server instance to use.</dd>
+        <dt>Device <span class="property-type">object</span></dt><dd>Choose the device instance to use.</dd>
+        <dt>Command <span class="property-type">string</span></dt>
+        <dd>
+            <ul>
+                <li><b>homekit:</b> select if data is from homekit nodes;</li>
+                <li><b>mi:</b> predefined commands;</li>
+            </ul>
+        </dd>
+        <dt>Payload <span class="property-type">string or object</span></dt><dd>Select your payload data.</dd>
     </dl>
 
     <h3>Outputs</h3>
     <h5>Raw output</h5>
     <dl class="message-properties">
-        <dt>payload <span class="property-type">string or object</span></dt><dd>Complete data or chosen state parameter.</dd>
-        <dt>meta<span class="property-type">object</span></dt><dd>Full device or group data.</dd>
+        <dt>request<span class="property-type">object</span></dt><dd>request to device</dd>
+        <dt>payload <span class="property-type">string or object</span></dt><dd>response from device</dd>
     </dl>
 </script>

@@ -18,6 +18,7 @@
         "read_docs": "Read docs"
     },
     "status": {
-        "server_node_error": "server node error"
+        "server_node_error": "server node error",
+        "error": "error"
     }
 }
