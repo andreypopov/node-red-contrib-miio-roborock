@@ -1,0 +1,1834 @@
+[
+  {
+    "id": "a4230e26.fbc75",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "◼ Stop",
+    "command": "app_stop",
+    "commandType": "vacuum_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "coordinates": "",
+    "fan_speed": "",
+    "x": 400,
+    "y": 1660,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "ff1d2f23.2a68d",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": "",
+    "x": 270,
+    "y": 1660,
+    "wires": [
+      [
+        "a4230e26.fbc75"
+      ]
+    ]
+  },
+  {
+    "id": "4e1eb62a.f35658",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "► Start",
+    "command": "app_start",
+    "commandType": "vacuum_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "coordinates": "",
+    "fan_speed": "",
+    "x": 400,
+    "y": 1420,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "bbd1c815.e84148",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": "",
+    "x": 270,
+    "y": 1420,
+    "wires": [
+      [
+        "4e1eb62a.f35658"
+      ]
+    ]
+  },
+  {
+    "id": "5d7ff352.046f4c",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "► Start zone ",
+    "command": "app_zoned_clean",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "[\n   [19500,22500,22200,26200,1]\n]",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 410,
+    "y": 1540,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "135b7b41.556d75",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 270,
+    "y": 1540,
+    "wires": [
+      [
+        "5d7ff352.046f4c"
+      ]
+    ]
+  },
+  {
+    "id": "15f6e4f2.5e999b",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "50",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 1310,
+    "y": 1500,
+    "wires": [
+      [
+        "387b01e.3d34cfe"
+      ]
+    ]
+  },
+  {
+    "id": "387b01e.3d34cfe",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "⚙ Fan Power",
+    "command": "set_custom_mode",
+    "commandType": "vacuum_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "coordinates": "[\n   [26234,26042,27284,26642,1],\n   [26234,26042,27284,26642,1]\n]",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 1460,
+    "y": 1500,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "73c98acb.fde0a4",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "10",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 1170,
+    "y": 1500,
+    "wires": [
+      [
+        "387b01e.3d34cfe"
+      ]
+    ]
+  },
+  {
+    "id": "f12c92be.a21ac",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "◼ Stop & dock",
+    "command": "app_stop_dock",
+    "commandType": "vacuum_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "coordinates": "",
+    "fan_speed": "",
+    "x": 420,
+    "y": 1620,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "e99ae212.4d2ff",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": "",
+    "x": 270,
+    "y": 1620,
+    "wires": [
+      [
+        "f12c92be.a21ac"
+      ]
+    ]
+  },
+  {
+    "id": "83611538.2b72d8",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "► Start spot",
+    "command": "app_spot",
+    "commandType": "vacuum_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "coordinates": "",
+    "fan_speed": "",
+    "x": 410,
+    "y": 1500,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "596e7267.d1f1bc",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": "",
+    "x": 270,
+    "y": 1500,
+    "wires": [
+      [
+        "83611538.2b72d8"
+      ]
+    ]
+  },
+  {
+    "id": "55d0dbf.9eb2e24",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "❙❙ Pause",
+    "command": "app_pause",
+    "commandType": "vacuum_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "coordinates": "",
+    "fan_speed": "",
+    "x": 400,
+    "y": 1580,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "b94277cb.290998",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": "",
+    "x": 270,
+    "y": 1580,
+    "wires": [
+      [
+        "55d0dbf.9eb2e24"
+      ]
+    ]
+  },
+  {
+    "id": "a0db1e39.e799b",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "► Start wet",
+    "command": "app_start_wet",
+    "commandType": "vacuum_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "coordinates": "",
+    "fan_speed": "",
+    "x": 410,
+    "y": 1460,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "bff75f4d.1c7d5",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": "",
+    "x": 270,
+    "y": 1460,
+    "wires": [
+      [
+        "a0db1e39.e799b"
+      ]
+    ]
+  },
+  {
+    "id": "7ef9632.7fc259c",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "Send vacuum to coordinates",
+    "command": "app_goto_target",
+    "commandType": "vacuum_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "coordinates": "[\n   [26234,26042,27284,26642,1],\n   [26234,26042,27284,26642,1]\n]",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 460,
+    "y": 1780,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "2d3b192b.19dd96",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "[26000,26000]",
+    "payloadType": "json",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 250,
+    "y": 1780,
+    "wires": [
+      [
+        "7ef9632.7fc259c"
+      ]
+    ]
+  },
+  {
+    "id": "78aad37e.90d6ac",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 710,
+    "y": 1580,
+    "wires": [
+      [
+        "85a926a5.8e9528"
+      ]
+    ]
+  },
+  {
+    "id": "85a926a5.8e9528",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get sound level",
+    "command": "get_sound_volume",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "[\n   [22200,23500,28000,28000,1]\n]",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 870,
+    "y": 1580,
+    "wires": [
+      [
+        "ab086eac.6cc33"
+      ]
+    ]
+  },
+  {
+    "id": "ab086eac.6cc33",
+    "type": "debug",
+    "z": "86138410.5a4068",
+    "name": "",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "x": 1150,
+    "y": 1740,
+    "wires": []
+  },
+  {
+    "id": "6f79f484.41ddec",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 710,
+    "y": 1780,
+    "wires": [
+      [
+        "9290b9b.a8be148"
+      ]
+    ]
+  },
+  {
+    "id": "9290b9b.a8be148",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "MI IO Info",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "Get current gateway",
+    "command": "miIO.info",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "[\n   [22200,23500,28000,28000,1]\n]",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 840,
+    "y": 1780,
+    "wires": [
+      [
+        "ab086eac.6cc33"
+      ]
+    ]
+  },
+  {
+    "id": "79b4f93d.b9b638",
+    "type": "comment",
+    "z": "86138410.5a4068",
+    "name": "Control commands",
+    "info": "",
+    "x": 430,
+    "y": 1360,
+    "wires": []
+  },
+  {
+    "id": "403ad957.498b58",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "Dock",
+    "command": "app_charge",
+    "commandType": "vacuum_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 390,
+    "y": 1700,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "14a34e22.a81932",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": "",
+    "x": 270,
+    "y": 1700,
+    "wires": [
+      [
+        "403ad957.498b58"
+      ]
+    ]
+  },
+  {
+    "id": "94fb5cc3.38751",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "Find me",
+    "command": "find_me",
+    "commandType": "vacuum_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 400,
+    "y": 1740,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "900b25e.4dde2d8",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": "",
+    "x": 270,
+    "y": 1740,
+    "wires": [
+      [
+        "94fb5cc3.38751"
+      ]
+    ]
+  },
+  {
+    "id": "fce97329.fcadd",
+    "type": "comment",
+    "z": "86138410.5a4068",
+    "name": "Info commands",
+    "info": "",
+    "x": 860,
+    "y": 1360,
+    "wires": []
+  },
+  {
+    "id": "f11ba9c3.f12cf8",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 710,
+    "y": 1700,
+    "wires": [
+      [
+        "85cb32.3dc264d"
+      ]
+    ]
+  },
+  {
+    "id": "85cb32.3dc264d",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get gateway",
+    "command": "get_gateway",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "[\n   [22200,23500,28000,28000,1]\n]",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 860,
+    "y": 1700,
+    "wires": [
+      [
+        "ab086eac.6cc33"
+      ]
+    ]
+  },
+  {
+    "id": "c0da640e.615088",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get consumables status",
+    "command": "get_consumable",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "[\n   [22200,23500,28000,28000,1]\n]",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 900,
+    "y": 1460,
+    "wires": [
+      [
+        "ab086eac.6cc33"
+      ]
+    ]
+  },
+  {
+    "id": "7032b4de.9aabcc",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 710,
+    "y": 1460,
+    "wires": [
+      [
+        "c0da640e.615088"
+      ]
+    ]
+  },
+  {
+    "id": "753eb7e6.de1d98",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get status",
+    "command": "get_status",
+    "commandType": "vacuum_cmd",
+    "payload": "10",
+    "payloadType": "str",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 850,
+    "y": 1420,
+    "wires": [
+      [
+        "ab086eac.6cc33"
+      ]
+    ]
+  },
+  {
+    "id": "daa341aa.91732",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 710,
+    "y": 1420,
+    "wires": [
+      [
+        "753eb7e6.de1d98"
+      ]
+    ]
+  },
+  {
+    "id": "6c68d1ba.23aad",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get timezone",
+    "command": "get_timezone",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 860,
+    "y": 1540,
+    "wires": [
+      [
+        "ab086eac.6cc33"
+      ]
+    ]
+  },
+  {
+    "id": "e2ab67c9.9e3e38",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 710,
+    "y": 1540,
+    "wires": [
+      [
+        "6c68d1ba.23aad"
+      ]
+    ]
+  },
+  {
+    "id": "cd65aa87.7f51a8",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get current voice",
+    "command": "get_current_sound",
+    "commandType": "vacuum_cmd",
+    "payload": "10",
+    "payloadType": "str",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 880,
+    "y": 1660,
+    "wires": [
+      [
+        "ab086eac.6cc33"
+      ]
+    ]
+  },
+  {
+    "id": "405d30bf.cac59",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 710,
+    "y": 1660,
+    "wires": [
+      [
+        "cd65aa87.7f51a8"
+      ]
+    ]
+  },
+  {
+    "id": "2d04d602.cfaf1a",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 710,
+    "y": 1740,
+    "wires": [
+      [
+        "35061c38.3ef234"
+      ]
+    ]
+  },
+  {
+    "id": "35061c38.3ef234",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get serial number",
+    "command": "get_serial_number",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "[\n   [22200,23500,28000,28000,1]\n]",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 880,
+    "y": 1740,
+    "wires": [
+      [
+        "ab086eac.6cc33"
+      ]
+    ]
+  },
+  {
+    "id": "138ae0e7.dc22ff",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get fan power",
+    "command": "get_custom_mode",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "[\n   [22200,23500,28000,28000,1]\n]",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 870,
+    "y": 1500,
+    "wires": [
+      [
+        "ab086eac.6cc33"
+      ]
+    ]
+  },
+  {
+    "id": "c7d775d.fc4f688",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 710,
+    "y": 1500,
+    "wires": [
+      [
+        "138ae0e7.dc22ff"
+      ]
+    ]
+  },
+  {
+    "id": "5aa218cb.0fb4d8",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get do not disturb",
+    "command": "get_dnd_timer",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 880,
+    "y": 1820,
+    "wires": [
+      [
+        "ab086eac.6cc33"
+      ]
+    ]
+  },
+  {
+    "id": "6c65576d.1a4658",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 710,
+    "y": 1820,
+    "wires": [
+      [
+        "5aa218cb.0fb4d8"
+      ]
+    ]
+  },
+  {
+    "id": "b6e43700.8fe378",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get timers",
+    "command": "get_timer",
+    "commandType": "vacuum_cmd",
+    "payload": "10",
+    "payloadType": "str",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 850,
+    "y": 1860,
+    "wires": [
+      [
+        "ab086eac.6cc33"
+      ]
+    ]
+  },
+  {
+    "id": "16b43d99.53acf2",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 710,
+    "y": 1860,
+    "wires": [
+      [
+        "b6e43700.8fe378"
+      ]
+    ]
+  },
+  {
+    "id": "14aa00a8.ea686f",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get cleaning summary",
+    "command": "get_clean_summary",
+    "commandType": "vacuum_cmd",
+    "payload": "10",
+    "payloadType": "str",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 890,
+    "y": 1900,
+    "wires": [
+      [
+        "ab086eac.6cc33"
+      ]
+    ]
+  },
+  {
+    "id": "9b03cd91.28181",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 710,
+    "y": 1900,
+    "wires": [
+      [
+        "14aa00a8.ea686f"
+      ]
+    ]
+  },
+  {
+    "id": "b513ae22.1c3fa",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get clean record",
+    "command": "get_clean_record",
+    "commandType": "vacuum_cmd",
+    "payload": "1564760616",
+    "payloadType": "num",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 870,
+    "y": 1940,
+    "wires": [
+      [
+        "ab086eac.6cc33"
+      ]
+    ]
+  },
+  {
+    "id": "8b77290d.884a48",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 710,
+    "y": 1940,
+    "wires": [
+      [
+        "b513ae22.1c3fa"
+      ]
+    ]
+  },
+  {
+    "id": "483aaacc.0aad14",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get map v1",
+    "command": "get_map_v1",
+    "commandType": "vacuum_cmd",
+    "payload": "10",
+    "payloadType": "str",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 860,
+    "y": 1980,
+    "wires": [
+      [
+        "ab086eac.6cc33"
+      ]
+    ]
+  },
+  {
+    "id": "5db1e72.a824518",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 710,
+    "y": 1980,
+    "wires": [
+      [
+        "483aaacc.0aad14"
+      ]
+    ]
+  },
+  {
+    "id": "a253b874.b80928",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 710,
+    "y": 2020,
+    "wires": [
+      [
+        "35252db9.fdba52"
+      ]
+    ]
+  },
+  {
+    "id": "35252db9.fdba52",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get log upload status",
+    "command": "get_log_upload_status",
+    "commandType": "vacuum_cmd",
+    "payload": "80",
+    "payloadType": "num",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 890,
+    "y": 2020,
+    "wires": [
+      [
+        "ab086eac.6cc33"
+      ]
+    ]
+  },
+  {
+    "id": "c25715c3.8c8058",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 710,
+    "y": 1620,
+    "wires": [
+      [
+        "94c0ba09.b5a4b8"
+      ]
+    ]
+  },
+  {
+    "id": "94c0ba09.b5a4b8",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get sound progress",
+    "command": "get_sound_progress",
+    "commandType": "vacuum_cmd",
+    "payload": "",
+    "payloadType": "num",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 880,
+    "y": 1620,
+    "wires": [
+      [
+        "ab086eac.6cc33"
+      ]
+    ]
+  },
+  {
+    "id": "1a4fde53.277482",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "100",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 1310,
+    "y": 1420,
+    "wires": [
+      [
+        "e5bdfcda.076e1"
+      ]
+    ]
+  },
+  {
+    "id": "e5bdfcda.076e1",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "⚙ Set sound level",
+    "command": "change_sound_volume",
+    "commandType": "vacuum_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 1470,
+    "y": 1420,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "8cdc977.9183d68",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 710,
+    "y": 2060,
+    "wires": [
+      [
+        "a8d43259.37f24"
+      ]
+    ]
+  },
+  {
+    "id": "a8d43259.37f24",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get carpet mode",
+    "command": "get_carpet_mode",
+    "commandType": "vacuum_cmd",
+    "payload": "80",
+    "payloadType": "num",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 880,
+    "y": 2060,
+    "wires": [
+      [
+        "ab086eac.6cc33"
+      ]
+    ]
+  },
+  {
+    "id": "d1b782a9.3dde4",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 710,
+    "y": 2100,
+    "wires": [
+      [
+        "a388e61d.0c5668"
+      ]
+    ]
+  },
+  {
+    "id": "a388e61d.0c5668",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get modes",
+    "command": "get_fw_features",
+    "commandType": "vacuum_cmd",
+    "payload": "80",
+    "payloadType": "num",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 860,
+    "y": 2100,
+    "wires": [
+      [
+        "ab086eac.6cc33"
+      ]
+    ]
+  },
+  {
+    "id": "d78b23e9.7e569",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 710,
+    "y": 2140,
+    "wires": [
+      [
+        "767a9ed8.c9f5"
+      ]
+    ]
+  },
+  {
+    "id": "767a9ed8.c9f5",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get locale",
+    "command": "app_get_locale",
+    "commandType": "vacuum_cmd",
+    "payload": "80",
+    "payloadType": "num",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 850,
+    "y": 2140,
+    "wires": [
+      [
+        "ab086eac.6cc33"
+      ]
+    ]
+  },
+  {
+    "id": "b88e6f3a.959f3",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "10",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 1170,
+    "y": 1420,
+    "wires": [
+      [
+        "e5bdfcda.076e1"
+      ]
+    ]
+  },
+  {
+    "id": "e851bbec.7886c8",
+    "type": "comment",
+    "z": "86138410.5a4068",
+    "name": "Settings commands",
+    "info": "",
+    "x": 1470,
+    "y": 1360,
+    "wires": []
+  },
+  {
+    "id": "e06ba3.df73a46",
+    "type": "comment",
+    "z": "86138410.5a4068",
+    "name": "Untested commands",
+    "info": "",
+    "x": 1480,
+    "y": 1720,
+    "wires": []
+  },
+  {
+    "id": "c1f278d0.698658",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "Reset consumables",
+    "command": "reset_consumable",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 1470,
+    "y": 1780,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "6a4c2029.6ef7c",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "Voice pack installation",
+    "command": "dnld_install_sound",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 1480,
+    "y": 1820,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "302cee72.da79c2",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "Enable log upload",
+    "command": "enable_log_upload",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 1470,
+    "y": 1860,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "8f6515aa.7c8878",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "Timer: update",
+    "command": "upd_timer",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 1460,
+    "y": 1900,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "e3f7f4b9.98a9c8",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "Timer: remove",
+    "command": "del_timer",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 1460,
+    "y": 1940,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "df3f9767.7b4068",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "🕹 Remote control: start",
+    "command": "app_rc_start",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 450,
+    "y": 1900,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "3c807fc8.90c1c",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "🕹 Remote control: stop",
+    "command": "app_rc_end",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 450,
+    "y": 1940,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "b1d464bd.a473b8",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "🕹Remote control: move",
+    "command": "app_rc_move",
+    "commandType": "vacuum_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 450,
+    "y": 1980,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "fd1db460.c991b8",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "Resume zone clean",
+    "command": "resume_zoned_clean",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 430,
+    "y": 1820,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "9a41e675.c66c38",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 270,
+    "y": 1820,
+    "wires": [
+      [
+        "fd1db460.c991b8"
+      ]
+    ]
+  },
+  {
+    "id": "9384183d.f81cb8",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "⚙ Set do not disturb time",
+    "command": "set_dnd_timer",
+    "commandType": "vacuum_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 1500,
+    "y": 1540,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "adfeb484.f96068",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "[23,0,8,0]",
+    "payloadType": "json",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 1300,
+    "y": 1540,
+    "wires": [
+      [
+        "9384183d.f81cb8"
+      ]
+    ]
+  },
+  {
+    "id": "38b3d105.47126e",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "⚙ Disable do not disturb",
+    "command": "close_dnd_timer",
+    "commandType": "vacuum_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 1490,
+    "y": 1580,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "cbb789ec.013da8",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 1310,
+    "y": 1580,
+    "wires": [
+      [
+        "38b3d105.47126e"
+      ]
+    ]
+  },
+  {
+    "id": "80b7b14e.1ab08",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "⚙ Test sound level",
+    "command": "test_sound_volume",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 1470,
+    "y": 1460,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "e83e6f95.fcaff",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 1310,
+    "y": 1460,
+    "wires": [
+      [
+        "80b7b14e.1ab08"
+      ]
+    ]
+  },
+  {
+    "id": "5206002b.5d664",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 270,
+    "y": 1900,
+    "wires": [
+      [
+        "df3f9767.7b4068"
+      ]
+    ]
+  },
+  {
+    "id": "efca7659.6cdb08",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 270,
+    "y": 1940,
+    "wires": [
+      [
+        "3c807fc8.90c1c"
+      ]
+    ]
+  },
+  {
+    "id": "f96825d1.9e0c48",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "Wet mode",
+    "command": "app_wet",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 410,
+    "y": 1860,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "857c299b.5f0898",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 270,
+    "y": 1860,
+    "wires": [
+      [
+        "f96825d1.9e0c48"
+      ]
+    ]
+  },
+  {
+    "id": "26d03971.917836",
+    "type": "function",
+    "z": "86138410.5a4068",
+    "name": "",
+    "func": " var seqnum = flow.get('seq_num') || 100;\n seqnum++;\n flow.set('seq_num',seqnum);\n \n msg.payload = [\n     {\n    \"omega\":msg.payload,\n     \"velocity\":0.29,\n     \"seqnum\":seqnum,\n     \"duration\":5000\n     } \n     ] ;\n \nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 270,
+    "y": 1980,
+    "wires": [
+      [
+        "b1d464bd.a473b8"
+      ]
+    ]
+  },
+  {
+    "id": "fb9596.69805a68",
+    "type": "inject",
+    "z": "86138410.5a4068",
+    "name": "",
+    "topic": "",
+    "payload": "-0.8",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 150,
+    "y": 1980,
+    "wires": [
+      [
+        "26d03971.917836"
+      ]
+    ]
+  },
+  {
+    "id": "1644217f.3db12f",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "Timer: add",
+    "command": "set_timer",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 1450,
+    "y": 1980,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "a5093fc7.a6ab8",
+    "type": "miio-roborock-server",
+    "z": "",
+    "name": "Vacuum",
+    "ip": "192.168.1.18",
+    "token": "6c5469443267644b756c7a4f58763965",
+    "polling": "5"
+  }
+]

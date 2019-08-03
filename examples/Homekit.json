@@ -14,11 +14,11 @@
     "model": "Default Model",
     "serialNo": "Default Serial Number",
     "characteristicProperties": "{\n    \"RotationSpeed\":{\n        \"minStep\":1,\n        \"maxValue\":100, \n        \"minValue\":0\n    },\n    \"SwingMode\": {\n        \"maxValue\":1, \n        \"minValue\":0\n    },\n    \"LockPhysicalControls\": {\n        \"maxValue\":1, \n        \"minValue\":0\n    }\n} ",
-    "x": 960,
-    "y": 660,
+    "x": 980,
+    "y": 240,
     "wires": [
       [
-        "a21a6d14.644da"
+        "78c4f7b4.9e7a28"
       ]
     ]
   },
@@ -37,8 +37,8 @@
     "model": "Default Model",
     "serialNo": "Default Serial Number",
     "characteristicProperties": "{}",
-    "x": 960,
-    "y": 480,
+    "x": 980,
+    "y": 120,
     "wires": [
       []
     ]
@@ -51,6 +51,11 @@
     "property": "payload.key",
     "propertyType": "msg",
     "rules": [
+      {
+        "t": "eq",
+        "v": "cleanTime",
+        "vt": "str"
+      },
       {
         "t": "eq",
         "v": "batteryLevel",
@@ -75,19 +80,17 @@
         "t": "eq",
         "v": "in_cleaning",
         "vt": "str"
-      },
-      {
-        "t": "eq",
-        "v": "cleanTime",
-        "vt": "str"
       }
     ],
     "checkall": "true",
     "repair": false,
     "outputs": 6,
-    "x": 490,
-    "y": 620,
+    "x": 430,
+    "y": 260,
     "wires": [
+      [
+        "8cf0d079.52751"
+      ],
       [
         "2a34a041.08601"
       ],
@@ -102,10 +105,8 @@
         "6939b50f.81d27c"
       ],
       [
-        "ca4e7253.fba2d"
-      ],
-      [
-        "8cf0d079.52751"
+        "ca4e7253.fba2d",
+        "6b8745a5.46231c"
       ]
     ]
   },
@@ -114,11 +115,11 @@
     "type": "function",
     "z": "86138410.5a4068",
     "name": "ChargingState",
-    "func": "var key = msg.payload.key;\nvar value = msg.payload.value;\n\nmsg.payload = {};\n\nif ('charging' === key) {\n    msg.payload.ChargingState = value?1:0\n    \n} else if ('state' === key) {\n    msg.payload.ChargingState = value==='charging'?1:0;\n} \n\nnode.status({fill:msg.payload.ChargingState?\"green\":\"red\",shape:\"dot\",text:msg.payload.ChargingState?'true':'false'})\n\nreturn msg;",
+    "func": "var key = msg.payload.key;\nvar value = msg.payload.value;\n\nmsg.payload = {};\n\nif ('charging' === key) {\n    msg.payload.ChargingState = value?1:0\n    \n} else if ('state' === key) {\n    msg.payload.ChargingState = value==='charging'?1:0;\n} \n\nnode.status({fill:\"grey\",shape:\"ring\",text:msg.payload.ChargingState?'true':'false'})\n\nreturn msg;",
     "outputs": 1,
     "noerr": 0,
-    "x": 760,
-    "y": 540,
+    "x": 700,
+    "y": 180,
     "wires": [
       [
         "fedf1973.fe1478"
@@ -130,11 +131,11 @@
     "type": "function",
     "z": "86138410.5a4068",
     "name": "BatteryLevel",
-    "func": "var value = msg.payload.value;\n\nmsg.payload = {\n    \"BatteryLevel\": value,\n    \"StatusLowBattery\": value < 15 ? 1 : 0\n}\n\nnode.status({fill:value < 15?\"red\":\"green\",shape:\"dot\",text:value+'%'})\n\nreturn msg;",
+    "func": "var value = msg.payload.value;\n\nmsg.payload = {\n    \"BatteryLevel\": value,\n    \"StatusLowBattery\": value < 15 ? 1 : 0\n}\n\nnode.status({fill:\"grey\",shape:\"ring\",text:value+'%'})\n\nreturn msg;",
     "outputs": 1,
     "noerr": 0,
-    "x": 750,
-    "y": 480,
+    "x": 690,
+    "y": 120,
     "wires": [
       [
         "fedf1973.fe1478"
@@ -162,8 +163,8 @@
       "dnd_enabled"
     ],
     "outputAtStartup": true,
-    "x": 300,
-    "y": 620,
+    "x": 200,
+    "y": 260,
     "wires": [
       [
         "df5d486d.19d838"
@@ -175,33 +176,14 @@
     "type": "function",
     "z": "86138410.5a4068",
     "name": "On",
-    "func": "var value = msg.payload.value;\n\nmsg.payload = {};\nmsg.payload.Active = value;\nmsg.payload.RotationSpeed = msg.status.fanSpeed;\nmsg.payload.SwingMode = msg.status.fanSpeed==105;\n\nnode.status({fill:value?\"green\":\"red\",shape:\"dot\",text:value?'true':'false'})\n\nreturn msg;",
+    "func": "var value = msg.payload.value;\n\nmsg.payload = {};\nmsg.payload.Active = value;\nmsg.payload.RotationSpeed = msg.status.fanSpeed;\nmsg.payload.SwingMode = msg.status.fanSpeed==105;\n\nnode.status({fill:\"grey\",shape:\"ring\",text:value?'true':'false'})\n\nreturn msg;",
     "outputs": 1,
     "noerr": 0,
-    "x": 730,
-    "y": 720,
+    "x": 670,
+    "y": 360,
     "wires": [
       [
         "d51c3511.6ec088"
-      ]
-    ]
-  },
-  {
-    "id": "a21a6d14.644da",
-    "type": "miio-roborock-command",
-    "z": "86138410.5a4068",
-    "name": "",
-    "server": "a5093fc7.a6ab8",
-    "command_name": "homekit",
-    "command": "homekit",
-    "commandType": "homekit_cmd",
-    "payload": "payload",
-    "payloadType": "msg",
-    "x": 1100,
-    "y": 660,
-    "wires": [
-      [
-        "9ded7f83.d181c"
       ]
     ]
   },
@@ -210,11 +192,11 @@
     "type": "function",
     "z": "86138410.5a4068",
     "name": "RotationSpeed",
-    "func": "var value = msg.payload.value;\n\nmsg.payload = {};\nmsg.payload.RotationSpeed = msg.status.fanSpeed;\nmsg.payload.SwingMode = msg.status.fanSpeed==105;\n\nnode.status({fill:\"green\",shape:\"dot\",text:msg.status.fanSpeed==105?'wet cleaning':value+'%'});\n\nreturn msg;",
+    "func": "var value = msg.payload.value;\n\nmsg.payload = {};\nmsg.payload.RotationSpeed = msg.status.fanSpeed;\nmsg.payload.SwingMode = msg.status.fanSpeed==105;\n\nnode.status({fill:\"grey\",shape:\"ring\",text:msg.status.fanSpeed==105?'wet cleaning':value+'%'});\n\nreturn msg;",
     "outputs": 1,
     "noerr": 0,
-    "x": 760,
-    "y": 660,
+    "x": 700,
+    "y": 300,
     "wires": [
       [
         "d51c3511.6ec088"
@@ -225,58 +207,16 @@
     "id": "eb1eacc3.681ae",
     "type": "function",
     "z": "86138410.5a4068",
-    "name": "by state",
-    "func": "var value = msg.payload.value;\n\nmsg.payload = {};\nmsg.payload.LockPhysicalControls = value==='returning'?1:0;\n\nif ([\"charging\", \"error\", \"charger-offline\", \"charger-error\", \"waiting\", \"paused\", \"shutting-down\", \"updating\", \"docking\", \"returning\"].indexOf(value)>=0) {\n    msg.payload.Active = 0;\n} \n\nnode.status({fill:\"green\",shape:\"dot\",text:value})\n\nreturn msg;",
+    "name": "ByState",
+    "func": "var value = msg.payload.value;\n\nmsg.payload = {};\nmsg.payload.LockPhysicalControls = value==='returning'?1:0;\n\nif ([\"charging\", \"error\", \"charger-offline\", \"charger-error\", \"waiting\", \"paused\", \"shutting-down\", \"updating\", \"docking\", \"returning\"].indexOf(value)>=0) {\n    msg.payload.Active = 0;\n} \n\nnode.status({fill:\"grey\",shape:\"ring\",text:value})\n\nreturn msg;",
     "outputs": 1,
     "noerr": 0,
-    "x": 740,
-    "y": 600,
+    "x": 680,
+    "y": 240,
     "wires": [
       [
         "d51c3511.6ec088"
       ]
-    ]
-  },
-  {
-    "id": "9ded7f83.d181c",
-    "type": "switch",
-    "z": "86138410.5a4068",
-    "name": "app_stop",
-    "property": "request.command",
-    "propertyType": "msg",
-    "rules": [
-      {
-        "t": "eq",
-        "v": "app_stop",
-        "vt": "str"
-      }
-    ],
-    "checkall": "true",
-    "repair": false,
-    "outputs": 1,
-    "x": 1240,
-    "y": 660,
-    "wires": [
-      [
-        "d6adce26.b9adb"
-      ]
-    ]
-  },
-  {
-    "id": "d6adce26.b9adb",
-    "type": "miio-roborock-command",
-    "z": "86138410.5a4068",
-    "name": "",
-    "server": "a5093fc7.a6ab8",
-    "command_name": "Start charging",
-    "command": "app_charge",
-    "commandType": "vacuum_cmd",
-    "payload": "payload",
-    "payloadType": "msg",
-    "x": 1400,
-    "y": 660,
-    "wires": [
-      []
     ]
   },
   {
@@ -296,8 +236,8 @@
     "checkall": "true",
     "repair": false,
     "outputs": 1,
-    "x": 770,
-    "y": 780,
+    "x": 710,
+    "y": 60,
     "wires": [
       [
         "aaab1022.0b6be"
@@ -310,13 +250,15 @@
     "z": "86138410.5a4068",
     "name": "",
     "server": "a5093fc7.a6ab8",
-    "command_name": "Stop vacuuming",
+    "command_name": "◼ Stop",
     "command": "app_stop",
     "commandType": "vacuum_cmd",
     "payload": "payload",
     "payloadType": "msg",
+    "coordinates": "",
+    "fan_speed": "",
     "x": 980,
-    "y": 780,
+    "y": 60,
     "wires": [
       [
         "7c4e17c3.657c68"
@@ -329,13 +271,438 @@
     "z": "86138410.5a4068",
     "name": "",
     "server": "a5093fc7.a6ab8",
-    "command_name": "Send findme",
+    "command_name": "Find me",
     "command": "find_me",
     "commandType": "vacuum_cmd",
     "payload": "payload",
     "payloadType": "msg",
+    "coordinates": "",
+    "fan_speed": "",
+    "x": 1120,
+    "y": 60,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "c2671d6f.28e2e",
+    "type": "homekit-service",
+    "z": "86138410.5a4068",
+    "isParent": true,
+    "bridge": "8e4d0c4d.ceb44",
+    "parentService": "",
+    "name": "Clean Room",
+    "serviceName": "Switch",
+    "topic": "",
+    "filter": false,
+    "manufacturer": "Default Manufacturer",
+    "model": "Default Model",
+    "serialNo": "Default Serial Number",
+    "characteristicProperties": "{}",
+    "x": 990,
+    "y": 420,
+    "wires": [
+      [
+        "cb0a6a60.229398"
+      ]
+    ]
+  },
+  {
+    "id": "893e803b.a6a69",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "Clean Room",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "► Start zone ",
+    "command": "app_zoned_clean",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "[\n   [22200,23500,28000,28000,1]\n]",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 1330,
+    "y": 420,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "cb0a6a60.229398",
+    "type": "switch",
+    "z": "86138410.5a4068",
+    "name": "on/off",
+    "property": "payload.On",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "true"
+      },
+      {
+        "t": "false"
+      }
+    ],
+    "checkall": "false",
+    "repair": false,
+    "outputs": 2,
     "x": 1150,
-    "y": 780,
+    "y": 420,
+    "wires": [
+      [
+        "893e803b.a6a69"
+      ],
+      [
+        "adc7b113.f8c8d"
+      ]
+    ]
+  },
+  {
+    "id": "adc7b113.f8c8d",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "◼ Stop & dock",
+    "command": "app_stop_dock",
+    "commandType": "vacuum_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 1340,
+    "y": 360,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "c4bd0894.ea54b8",
+    "type": "homekit-service",
+    "z": "86138410.5a4068",
+    "isParent": true,
+    "bridge": "8e4d0c4d.ceb44",
+    "parentService": "",
+    "name": "Clean Kitchen",
+    "serviceName": "Switch",
+    "topic": "",
+    "filter": false,
+    "manufacturer": "Default Manufacturer",
+    "model": "Default Model",
+    "serialNo": "Default Serial Number",
+    "characteristicProperties": "{}",
+    "x": 1000,
+    "y": 480,
+    "wires": [
+      [
+        "f3445b20.5fe888"
+      ]
+    ]
+  },
+  {
+    "id": "f3445b20.5fe888",
+    "type": "switch",
+    "z": "86138410.5a4068",
+    "name": "on/off",
+    "property": "payload.On",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "true"
+      },
+      {
+        "t": "false"
+      }
+    ],
+    "checkall": "false",
+    "repair": false,
+    "outputs": 2,
+    "x": 1150,
+    "y": 480,
+    "wires": [
+      [
+        "990dab67.0fa8f8"
+      ],
+      [
+        "adc7b113.f8c8d"
+      ]
+    ]
+  },
+  {
+    "id": "aaf84744.30b4c8",
+    "type": "homekit-service",
+    "z": "86138410.5a4068",
+    "isParent": true,
+    "bridge": "8e4d0c4d.ceb44",
+    "parentService": "",
+    "name": "Clean Hall",
+    "serviceName": "Switch",
+    "topic": "",
+    "filter": false,
+    "manufacturer": "Default Manufacturer",
+    "model": "Default Model",
+    "serialNo": "Default Serial Number",
+    "characteristicProperties": "{}",
+    "x": 990,
+    "y": 540,
+    "wires": [
+      [
+        "9fde7bd.d951088"
+      ]
+    ]
+  },
+  {
+    "id": "9fde7bd.d951088",
+    "type": "switch",
+    "z": "86138410.5a4068",
+    "name": "on/off",
+    "property": "payload.On",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "true"
+      },
+      {
+        "t": "false"
+      }
+    ],
+    "checkall": "false",
+    "repair": false,
+    "outputs": 2,
+    "x": 1150,
+    "y": 540,
+    "wires": [
+      [
+        "94c50ad2.d1e5f8"
+      ],
+      [
+        "adc7b113.f8c8d"
+      ]
+    ]
+  },
+  {
+    "id": "94c50ad2.d1e5f8",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "Clean Hall",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "► Start zone ",
+    "command": "app_zoned_clean",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "[\n   [19000,26200,22200,28000,1]\n]",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 1330,
+    "y": 540,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "990dab67.0fa8f8",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "Clean Kitchen",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "► Start zone ",
+    "command": "app_zoned_clean",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "[\n   [19500,22500,22200,26200,1]\n]",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 1340,
+    "y": 480,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "6b8745a5.46231c",
+    "type": "function",
+    "z": "86138410.5a4068",
+    "name": "ZoneCleaning",
+    "func": "var value = msg.payload.value;\nnode.status({fill:\"grey\",shape:\"ring\",text:value?'true':'false'})\n\nif (value) return null;\n\nmsg.payload = {};\nmsg.payload.On = false;\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 700,
+    "y": 420,
+    "wires": [
+      [
+        "c2671d6f.28e2e",
+        "c4bd0894.ea54b8",
+        "aaf84744.30b4c8",
+        "6513d6a2.6f7028",
+        "ff994285.7c2e7"
+      ]
+    ]
+  },
+  {
+    "id": "78c4f7b4.9e7a28",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "homekit",
+    "command": "homekit",
+    "commandType": "homekit_cmd",
+    "payload": "payload",
+    "payloadType": "msg",
+    "coordinates": "[\n   [26234,26042,27284,26642,1],\n   [26234,26042,27284,26642,1]\n]",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 1120,
+    "y": 240,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "6513d6a2.6f7028",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get consumables status",
+    "command": "get_consumable",
+    "commandType": "vacuum_cmd",
+    "payload": "arguments",
+    "payloadType": "vacuum_payload",
+    "coordinates": "[\n   [22200,23500,28000,28000,1]\n]",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 740,
+    "y": 640,
+    "wires": [
+      [
+        "56228fdc.1b51f",
+        "50c4b50b.40cdac",
+        "ad7e444e.9fbe58",
+        "7ee67732.01f988"
+      ]
+    ]
+  },
+  {
+    "id": "56228fdc.1b51f",
+    "type": "function",
+    "z": "86138410.5a4068",
+    "name": "MainBrush",
+    "func": "msg.payload = (100-(msg.payload[0]['main_brush_work_time']/1080000*100)).toFixed(1);\n\nnode.status({fill:\"grey\",shape:\"ring\",text:msg.payload+'%'})\n\n\nmsg.payload = {\n    \"FilterChangeIndication\":msg.payload<20?1:0,\n    \"FilterLifeLevel\":msg.payload\n}\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 990,
+    "y": 640,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "50c4b50b.40cdac",
+    "type": "function",
+    "z": "86138410.5a4068",
+    "name": "SideBrush",
+    "func": "msg.payload = (100-(msg.payload[0]['side_brush_work_time']/720000*100)).toFixed(1);\n\nnode.status({fill:\"grey\",shape:\"ring\",text:msg.payload+'%'})\nmsg.payload = {\n    \"FilterChangeIndication\":msg.payload<20?1:0,\n    \"FilterLifeLevel\":msg.payload\n}\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 1150,
+    "y": 640,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "ad7e444e.9fbe58",
+    "type": "function",
+    "z": "86138410.5a4068",
+    "name": "MainFilter",
+    "func": "msg.payload = (100-(msg.payload[0]['filter_work_time']/540000*100)).toFixed(1);\n\nnode.status({fill:\"grey\",shape:\"ring\",text:msg.payload+'%'})\nmsg.payload = {\n    \"FilterChangeIndication\":msg.payload<20?1:0,\n    \"FilterLifeLevel\":msg.payload\n}\n\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 1300,
+    "y": 640,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "7ee67732.01f988",
+    "type": "function",
+    "z": "86138410.5a4068",
+    "name": "Sensors",
+    "func": "msg.payload = (100-(msg.payload[0]['sensor_dirty_time']/108000*100)).toFixed(1);\n\nnode.status({fill:\"grey\",shape:\"ring\",text:msg.payload+'%'})\nmsg.payload = {\n    \"FilterChangeIndication\":msg.payload<20?1:0,\n    \"FilterLifeLevel\":msg.payload\n}\n\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 1440,
+    "y": 640,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "ff994285.7c2e7",
+    "type": "miio-roborock-command",
+    "z": "86138410.5a4068",
+    "name": "",
+    "server": "a5093fc7.a6ab8",
+    "command_name": "ⓘ Get cleaning summary",
+    "command": "get_clean_summary",
+    "commandType": "vacuum_cmd",
+    "payload": "10",
+    "payloadType": "str",
+    "coordinates": "",
+    "fan_speed": "",
+    "homekit_stop_to_dock": true,
+    "x": 730,
+    "y": 700,
+    "wires": [
+      [
+        "ea13c3bf.710a2",
+        "4ebe88ac.8b49d8",
+        "26a5ed88.91f352"
+      ]
+    ]
+  },
+  {
+    "id": "ea13c3bf.710a2",
+    "type": "function",
+    "z": "86138410.5a4068",
+    "name": "Total time",
+    "func": "msg.payload = (msg.payload[0]/60/60).toFixed(0);\nnode.status({fill:\"grey\",shape:\"ring\",text:msg.payload+' hours'})\n\nreturn null;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 980,
+    "y": 700,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "4ebe88ac.8b49d8",
+    "type": "function",
+    "z": "86138410.5a4068",
+    "name": "Total area",
+    "func": "msg.payload = (msg.payload[1]/1000000).toFixed(0);\nnode.status({fill:\"grey\",shape:\"ring\",text:msg.payload+' m2'})\n\nreturn null;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 1140,
+    "y": 700,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "26a5ed88.91f352",
+    "type": "function",
+    "z": "86138410.5a4068",
+    "name": "Total cleanings",
+    "func": "msg.payload = msg.payload[2];\nnode.status({fill:\"grey\",shape:\"ring\",text:msg.payload})\n\nreturn null;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 1320,
+    "y": 700,
     "wires": [
       []
     ]
