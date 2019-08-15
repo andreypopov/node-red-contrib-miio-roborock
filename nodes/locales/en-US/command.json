@@ -8,7 +8,8 @@
         "coordinates": "Coordinates",
         "fan_speed_percent": "Speed, %",
         "homekit_stop": "On Stop",
-        "homekit_stop_help": "Go to dock"
+        "homekit_stop_help": "Go to dock",
+        "voice_pack": "Voice pack"
     },
     "placeholder": {
         "name": "Name",
@@ -20,5 +21,13 @@
     "status": {
         "server_node_error": "server node error",
         "error": "error"
+    },
+    "languages": {
+        "ru": "Russian",
+        "en": "English",
+        "he": "Hebrew",
+        "uk": "Ukrainian",
+        "s5_official": "Official: gen1, gen2 (v1,s5)",
+        "s6_official": "Official: gen3 (v1s,s6,t6)"
     }
 }

@@ -37,6 +37,13 @@
         <input type="number" id="node-input-fan_speed" data-i18n="[placeholder]placeholder.fan_speed">
         <hr>
     </div>
+     <!--dnld_install_sound-->
+    <div class="form-row command_options command_options__dnld_install_sound">
+        <label for="node-input-voice_pack" class="l-width"><span data-i18n="label.voice_pack"></span></label>
+        <select id="node-input-voice_pack"></select>
+        <hr>
+    </div>
+
 
     <div class="form-row homekit_options">
         <label for='node-input-homekit_stop_to_dock' class="l-width"><i class='fa fa-share-square'></i> <span data-i18n="label.homekit_stop"></span></label>
@@ -93,6 +100,9 @@
             },
             fan_speed: {
                 value: 100,
+            },
+            voice_pack: {
+                value: null,
             },
             homekit_stop_to_dock: {
                 value: false,
@@ -170,6 +180,7 @@
 
 
 
+                    voicePackInit();
 
 
                     $commandInput.on('change', function(type, value) {
@@ -239,6 +250,49 @@
                             }
                         }
 
+                    }
+
+                    function voicePackInit() {
+                        // Initialize bootstrap multiselect form
+                        $voicePacksSelect = $('#node-input-voice_pack');
+                        $voicePacksSelect.multiselect({
+                            maxHeight: 300,
+                            disableIfEmpty: true,
+                            buttonWidth: '70%'
+                        });
+
+                        $voicePacksSelect.children().remove();
+                        $.getJSON('miio-roborock/getVoices', {
+                            controllerID: node.server
+                        }).done(function (data, textStatus, jqXHR) {
+                            try {
+
+                                var groupHtml = '';
+                                var currentGroup = null;
+
+                                $.each(data, function(index, value) {
+
+                                    if (value.lang !== currentGroup) {
+                                        groupHtml = $('<optgroup/>', { label: RED._("node-red-contrib-miio-roborock/command:languages."+value.lang) });
+                                        groupHtml.appendTo($voicePacksSelect);
+                                        currentGroup = value.lang;
+                                    }
+
+                                    $('<option  value="' + index +'">'+value.name+' (ver: '+value.ver+')</option>').appendTo(groupHtml);
+                                });
+                                $voicePacksSelect.multiselect('enable');
+                                $voicePacksSelect.val(node.voice_pack);
+                                $voicePacksSelect.multiselect('rebuild');
+
+                            } catch (error) {
+                                console.error('Error #4544');
+                                console.log(error);
+                            }
+
+                        }).fail(function (jqXHR, textStatus, errorThrown) {
+                            $voicePacksSelect.multiselect('disable');
+                            $voicePacksSelect.multiselect('refresh');
+                        });
                     }
 
                 } catch (error) {

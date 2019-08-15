@@ -28,6 +28,10 @@ module.exports = function (RED) {
         res.json(MiioRoborockVocabulary.commands);
     });
 
+    RED.httpAdmin.get(NODE_PATH + 'getVoices', function (req, res) {
+        res.json(MiioRoborockVocabulary.voices);
+    });
+
     // RED.httpAdmin.get(NODE_PATH + 'find', function (req, res) {
     //     var config = req.query;
     //     var controller = RED.nodes.getNode(config.controllerID);

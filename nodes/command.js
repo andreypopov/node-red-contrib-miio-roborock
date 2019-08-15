@@ -97,6 +97,16 @@ module.exports = function(RED) {
                                 payload = [[], []];
                             break;
 
+                            case "dnld_install_sound":
+                                var voiceId = parseInt(node.config.voice_pack);
+                                if (voiceId > 0 && voiceId in MiioRoborockVocabulary.voices) {
+                                    var voicePack = MiioRoborockVocabulary.voices[voiceId];
+                                    payload = {"md5":voicePack.md5,"sid":voiceId,"url":voicePack.url,"sver":voicePack.sver};
+                                } else {
+                                    payload = command = null;
+                                }
+                            break;
+
                             case "app_zoned_clean":
                                 if (node.config.payloadType === 'vacuum_payload') {
                                     payload = JSON.parse((node.config.coordinates).replace(/\s+/g, " "));
