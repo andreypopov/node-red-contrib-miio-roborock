@@ -8,6 +8,9 @@ Available nodes are:
 * miio-roborock-command: control your vacuum
 * miio-roborock-event: get events from vacuum
 
+
+<b>Examples:</b> Import from node-red menu!
+
 <img src="https://github.com/andreypopov/node-red-contrib-miio-roborock/blob/master/readme/1-2.png?raw=true">
 <img src="https://github.com/andreypopov/node-red-contrib-miio-roborock/blob/master/readme/2.png?raw=true">
 <img src="https://github.com/andreypopov/node-red-contrib-miio-roborock/blob/master/readme/3.png?raw=true">
