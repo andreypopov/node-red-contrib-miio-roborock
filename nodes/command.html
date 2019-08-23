@@ -143,7 +143,7 @@
                     node.commands = data;
                     var commands = [];
                     $.each(data, function(index, value) {
-                        commands.push({'value':index, 'label':value.name});
+                        commands.push({'value':index, 'label':RED._("node-red-contrib-miio-roborock/command:commands."+index)});
                     });
 
                     var topicTypes = {

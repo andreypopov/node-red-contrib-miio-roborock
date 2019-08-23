@@ -1,0 +1,18 @@
+<script type="text/x-red" data-help-name="miio-roborock-event">
+    <p>Нода получает события от пылесова.</p>
+    <h3>Конфигурация</h3>
+    <dl class="message-properties">
+        <dt class="optional">Название <span class="property-type">string</span></dt><dd>Указать свое название для ноды</dd>
+        <dt>Устройство <span class="property-type">object</span></dt><dd>Выбрать устройство.</dd>
+        <dt>Типы событий <span class="property-type">object</span></dt><dd>Выбрать события.</dd>
+        <dt class="optional">Начать вывод <span class="property-type">boolean</span></dt><dd>Отдавать данные при старте нод-реда</dd>
+    </dl>
+
+    <h3>Выводы</h3>
+    <h5>Вывод 1</h5>
+    <dl class="message-properties">
+        <dt>msg.payload <span class="property-type">object</span></dt><dd>данные события</dd>
+        <dt>msg.status <span class="property-type">object</span></dt><dd>полный статус устройства</dd>
+    </dl>
+</script>
+

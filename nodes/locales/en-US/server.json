@@ -4,6 +4,7 @@
         "ip_address": "IP-Address",
         "token": "Token",
         "settings": "Settings",
-        "find": "Find!"
+        "find": "Find!",
+        "polling": "Polling, sec"
     }
 }

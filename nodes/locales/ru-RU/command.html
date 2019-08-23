@@ -1,0 +1,25 @@
+<script type="text/x-red" data-help-name="miio-roborock-command">
+    <p>Управлять пылесом</p>
+    <p>Команда</p>
+
+    <h3>Конфигурация</h3>
+    <dl class="message-properties">
+        <dt class="optional">Название <span class="property-type">string</span></dt><dd>Свое название для ноды.</dd>
+        <dt>Устройство <span class="property-type">object</span></dt><dd>Выбрать устройство</dd>
+        <dt>Команда <span class="property-type">string</span></dt>
+        <dd>
+            <ul>
+                <li><b>homekit:</b> выбрать, если данные получены от homekit ноды;</li>
+                <li><b>mi:</b> предустановленные команды;</li>
+            </ul>
+        </dd>
+        <dt>Данные <span class="property-type">string or object</span></dt><dd>Выбрать откуда данные</dd>
+    </dl>
+
+    <h3>Выводы</h3>
+    <h5>Вывод 1</h5>
+    <dl class="message-properties">
+        <dt>request<span class="property-type">object</span></dt><dd>запрос к устройству</dd>
+        <dt>payload <span class="property-type">string or object</span></dt><dd>ответ от устройства</dd>
+    </dl>
+</script>
