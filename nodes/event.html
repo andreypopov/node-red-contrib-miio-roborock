@@ -1,5 +1,6 @@
 <script type="text/x-red" data-template-name="miio-roborock-event">
-    <link rel="stylesheet" href="miio-roborock/static/css/bootstrap-multiselect.css" type="text/css" />
+    <link rel="stylesheet" href="miio-roborock/static/css/multiple-select.css" type="text/css" />
+    <link rel="stylesheet" href="miio-roborock/static/css/common.css" type="text/css" />
 
     <div class="form-row">
         <label for="node-input-name" class="l-width"><i class="icon-tag"></i> <span data-i18n="label.name"></span></label>
@@ -11,7 +12,7 @@
     </div>
     <div class="form-row">
         <label for="node-input-eventTypes" class="l-width"><i class="fa fa-crosshairs"></i> <span data-i18n="label.event_types"></span></label>
-        <select id="node-input-eventTypes" multiple="multiple"></select>
+        <select id="node-input-eventTypes" class="s-width" multiple="multiple"  data-i18n="[placeholder]multiselect.filter_event"></select>
     </div>
     <div class="form-row">
         <label for='node-input-outputAtStartup' class="l-width"><i class='fa fa-share-square'></i> <span data-i18n="label.start_output"></span></label>
@@ -53,14 +54,13 @@
             var node = this;
             var $eventTypesSelect = $("#node-input-eventTypes");
             // Initialize bootstrap multiselect form
-            $eventTypesSelect.multiselect({
+            $eventTypesSelect.multipleSelect({
                 maxHeight: 300,
-                disableIfEmpty: true,
-                buttonWidth: '70%',
-                numberDisplayed: 1,
-                allSelectedText: RED._("node-red-contrib-miio-roborock/event:multiselect.complete_data"),
-                nSelectedText: RED._("node-red-contrib-miio-roborock/event:multiselect.selected"),
-                includeSelectAllOption: true
+                dropWidth: 320,
+                width: 320,
+                single: false,
+                filter: true,
+                filterPlaceholder: RED._("node-red-contrib-miio-roborock/event:multiselect.filter_event")
             });
 
             $eventTypesSelect.children().remove();
@@ -71,9 +71,9 @@
                     $.each(data, function(index, value) {
                         $('<option  value="' + index +'">'+index+' ('+value+')</option>').appendTo($eventTypesSelect);
                     });
-                    $eventTypesSelect.multiselect('enable');
+                    $eventTypesSelect.multipleSelect('enable');
                     $eventTypesSelect.val(node.eventTypes);
-                    $eventTypesSelect.multiselect('rebuild');
+                    $eventTypesSelect.multipleSelect('refresh'); //rebuild
 
                 } catch (error) {
                     console.error('Error #4534');
@@ -81,8 +81,8 @@
                 }
 
             }).fail(function (jqXHR, textStatus, errorThrown) {
-                $eventTypesSelect.multiselect('disable');
-                $eventTypesSelect.multiselect('refresh');
+                $eventTypesSelect.multipleSelect('disable');
+                // $eventTypesSelect.multipleSelect('refresh');
             });
         }
     });

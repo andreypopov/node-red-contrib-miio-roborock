@@ -11,7 +11,8 @@
     },
     "multiselect": {
         "selected": "выбрано",
-        "complete_data": "Все события"
+        "complete_data": "Все события",
+        "filter_event": "Фильтровать события"
     },
     "status": {
         "server_node_error": "ошибка устройства",

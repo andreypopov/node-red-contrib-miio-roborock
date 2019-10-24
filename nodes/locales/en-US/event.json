@@ -11,7 +11,8 @@
     },
     "multiselect": {
         "selected": "selected",
-        "complete_data": "All events"
+        "complete_data": "All events",
+        "filter_event": "Filter events"
     },
     "status": {
         "server_node_error": "server node error",
