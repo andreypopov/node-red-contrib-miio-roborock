@@ -70,8 +70,8 @@ module.exports = function (RED) {
                     node.device.updateMaxPollFailures(0);
 
 
-                    console.log('Miio Roborock: Connected');
-                    console.log(device);
+                    // console.log('Miio Roborock: Connected');
+                    // console.log(device);
 
                     node.device.on('thing:initialized', () => {
                         node.log('Miio Roborock: Initialized');
@@ -101,8 +101,6 @@ module.exports = function (RED) {
 
                                 var initProps = result[0];
                                 that.device.loadProperties(Object.keys(result[0])).then(result => {
-                                    console.log('Result:');
-                                    console.log(result);
                                     //support for unsupported devices
                                     for (var key in initProps) {
                                         if (!(key in result)) {
