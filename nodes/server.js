@@ -95,7 +95,7 @@ module.exports = function (RED) {
 
             return new Promise(function (resolve, reject) {
                 if (force || !that.status) {
-                    if (that.device !== null) {
+                    if (that.device !== null && that.device !== undefined) {
                         that.device.call("get_status", [])
                             .then(result => {
 
