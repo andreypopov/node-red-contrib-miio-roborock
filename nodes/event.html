@@ -55,25 +55,28 @@
             var $eventTypesSelect = $("#node-input-eventTypes");
             // Initialize bootstrap multiselect form
             $eventTypesSelect.multipleSelect({
+                single: !(typeof $(this).attr('multiple') !== typeof undefined && $(this).attr('multiple') !== false),
                 maxHeight: 300,
                 dropWidth: 320,
                 width: 320,
-                single: false,
                 filter: true,
                 filterPlaceholder: RED._("node-red-contrib-miio-roborock/event:multiselect.filter_event")
             });
-
             $eventTypesSelect.children().remove();
             $.getJSON('miio-roborock/getStatus', {
                 controllerID: node.server
             }).done(function (data, textStatus, jqXHR) {
                 try {
-                    $.each(data, function(index, value) {
-                        $('<option  value="' + index +'">'+index+' ('+value+')</option>').appendTo($eventTypesSelect);
-                    });
-                    $eventTypesSelect.multipleSelect('enable');
-                    $eventTypesSelect.val(node.eventTypes);
-                    $eventTypesSelect.multipleSelect('refresh'); //rebuild
+                    if (data.length) {
+                        $.each(data, function (index, value) {
+                            $('<option  value="' + index + '">' + index + ' (' + value + ')</option>').appendTo($eventTypesSelect);
+                        });
+                        $eventTypesSelect.multipleSelect('enable');
+                        $eventTypesSelect.val(node.eventTypes);
+                        $eventTypesSelect.multipleSelect('refresh'); //rebuild
+                    } else {
+                        $eventTypesSelect.multipleSelect('disable');
+                    }
 
                 } catch (error) {
                     console.error('Error #4534');

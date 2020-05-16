@@ -20,7 +20,7 @@ module.exports = function (RED) {
         if (controller && controller.constructor.name === "ServerNode") {
             res.json(controller.status);
         } else {
-            res.status(404).end();
+            res.json([]);
         }
     });
 
