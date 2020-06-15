@@ -15,6 +15,7 @@ module.exports = function (RED) {
     });
 
     RED.httpAdmin.get(NODE_PATH + 'getStatus', function (req, res) {
+        // res.json({"msg_ver":3,"msg_seq":19069,"state":"charging","batteryLevel":100,"cleanTime":2008,"cleanArea":33300000,"error":{"code":3,"message":"Try moving the vacuum to a different place."},"map_present":1,"in_cleaning":0,"in_returning":0,"in_fresh_state":1,"lab_status":1,"water_box_status":0,"fanSpeed":101,"dnd_enabled":0,"map_status":3,"lock_status":0,"error_code":0});
         var config = req.query;
         var controller = RED.nodes.getNode(config.controllerID);
         if (controller && controller.constructor.name === "ServerNode") {

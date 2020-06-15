@@ -53,29 +53,29 @@
         oneditprepare: function () {
             var node = this;
             var $eventTypesSelect = $("#node-input-eventTypes");
-            // Initialize bootstrap multiselect form
-            $eventTypesSelect.multipleSelect({
-                single: !(typeof $(this).attr('multiple') !== typeof undefined && $(this).attr('multiple') !== false),
-                maxHeight: 300,
-                dropWidth: 320,
-                width: 320,
-                filter: true,
-                filterPlaceholder: RED._("node-red-contrib-miio-roborock/event:multiselect.filter_event")
-            });
-            $eventTypesSelect.children().remove();
+            $eventTypesSelect.find('option').remove();
+            $eventTypesSelect.attr('disabled', 'disabled');
+
             $.getJSON('miio-roborock/getStatus', {
                 controllerID: node.server
             }).done(function (data, textStatus, jqXHR) {
                 try {
-                    if (data.length) {
+                    if (Object.keys(data).length) {
+                        $eventTypesSelect.removeAttr('disabled');
                         $.each(data, function (index, value) {
                             $('<option  value="' + index + '">' + index + ' (' + value + ')</option>').appendTo($eventTypesSelect);
                         });
-                        $eventTypesSelect.multipleSelect('enable');
                         $eventTypesSelect.val(node.eventTypes);
-                        $eventTypesSelect.multipleSelect('refresh'); //rebuild
-                    } else {
-                        $eventTypesSelect.multipleSelect('disable');
+
+                        // Initialize bootstrap multiselect form
+                        $eventTypesSelect.multipleSelect({
+                            single: false,
+                            maxHeight: 300,
+                            dropWidth: 320,
+                            width: 320,
+                            filter: true,
+                            filterPlaceholder: RED._("node-red-contrib-miio-roborock/event:multiselect.filter_event")
+                        });
                     }
 
                 } catch (error) {
