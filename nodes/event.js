@@ -14,11 +14,16 @@ module.exports = function(RED) {
             //get server node
             node.server = RED.nodes.getNode(node.config.server);
             if (node.server) {
-                // node.server.on('onClose', () => this.onClose());
-                node.server.on('onInitEnd', (status) => node.onInitEnd(status));
-                node.server.on('onStateChanged', (data, output) => node.onStateChanged(data, output));
-                node.server.on('onStateChangedError', (error) => node.onStateChangedError(error));
+                node.listener_onInitEnd =  function(status) { node.onInitEnd(status); }
+                node.server.on('onInitEnd', node.listener_onInitEnd);
 
+                node.listener_onStateChanged =  function(data, output) { node.onStateChanged(data, output); }
+                node.server.on('onStateChanged', node.listener_onStateChanged);
+
+                node.listener_onStateChangedError =  function(error) { node.onStateChangedError(error); }
+                node.server.on('onStateChangedError', node.listener_onStateChangedError);
+
+                node.on('close', () => this.onClose());
 
                 if (node.config.outputAtStartup) {
                     node.sendState();
@@ -29,6 +34,21 @@ module.exports = function(RED) {
                     shape: "dot",
                     text: "node-red-contrib-miio-roborock/event:status.server_node_error"
                 });
+            }
+        }
+
+        onClose() {
+            var node = this;
+
+            //remove listeners
+            if (node.listener_onInitEnd) {
+                node.server.removeListener('onInitEnd', node.listener_onInitEnd);
+            }
+            if (node.listener_onStateChanged) {
+                node.server.removeListener('onStateChanged', node.listener_onStateChanged);
+            }
+            if (node.listener_onStateChangedError) {
+                node.server.removeListener("onStateChangedError", node.listener_onStateChangedError);
             }
         }
 
