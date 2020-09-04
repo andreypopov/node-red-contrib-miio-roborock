@@ -28,7 +28,8 @@
         "he": "Hebrew",
         "uk": "Ukrainian",
         "s5_official": "Оффициальный: gen1, gen2 (v1,s5)",
-        "s6_official": "Оффициальный: gen3 (v1s,s6,t6)"
+        "s6_official": "Оффициальный: gen3 (v1s,s6,t6)",
+        "s5e_official": "Оффициальный: gen3 (s5e)"
     },
     "commands": {
         "app_start": "► Старт",
@@ -44,11 +45,13 @@
         "app_segment_clean": "► Старт уборку комнаты",
         "stop_segment_clean": "◼ Стоп уборка комнаты",
         "resume_segment_clean": "► Возобновить уборку комнаты",
+        "get_room_mapping": "ⓘ Список комнат",
         "find_me": "Найди меня",
         "app_goto_target": "Отправить на координаты",
         "get_status": "ⓘ Получить: Статус",
         "get_consumable": "ⓘ Получить: Расходники",
         "get_custom_mode": "ⓘ Получить: Скорость вентилятора",
+        "get_water_box_custom_mode": "ⓘ Получить: Поток воды",
         "get_timezone": "ⓘ Получить: Временная зона",
         "get_sound_volume": "ⓘ Получить: Громкость",
         "get_sound_progress": "ⓘ Получить: Говорит или нет",
@@ -64,6 +67,7 @@
         "get_fw_features": "ⓘ Получить: Режимы",
         "app_get_locale": "ⓘ Получить: Локаль",
         "set_custom_mode": "⚙ Установить: Скорость вентиляторв",
+        "set_water_box_custom_mode": "ⓘ Установить: Поток воды",
         "change_sound_volume": "⚙ Установить: Громкость",
         "set_timezone": "⚙ Установить: Временная зона",
         "set_dnd_timer": "⚙ Установить: Не беспокоить",

@@ -11,10 +11,6 @@
         <input type="text" id="node-input-server">
     </div>
     <div class="form-row">
-        <label for="node-input-eventTypes" class="l-width"><i class="fa fa-crosshairs"></i> <span data-i18n="label.event_types"></span></label>
-        <select id="node-input-eventTypes" class="s-width" multiple="multiple"  data-i18n="[placeholder]multiselect.filter_event"></select>
-    </div>
-    <div class="form-row">
         <label for='node-input-outputAtStartup' class="l-width"><i class='fa fa-share-square'></i> <span data-i18n="label.start_output"></span></label>
         <input type="checkbox" id="node-input-outputAtStartup" checked="checked" style="display: inline-block; width: auto; vertical-align: top;"> <span data-i18n="label.start_output_help"></span></input>
     </div>
@@ -33,10 +29,6 @@
                 type: "miio-roborock-server",
                 required: true
             },
-            eventTypes: {
-                value: null,
-                required: true
-            },
             outputAtStartup: {
                 value: true,
                 required: true,
@@ -52,41 +44,38 @@
         },
         oneditprepare: function () {
             var node = this;
-            var $eventTypesSelect = $("#node-input-eventTypes");
-            $eventTypesSelect.find('option').remove();
-            $eventTypesSelect.attr('disabled', 'disabled');
 
-            $.getJSON('miio-roborock/getStatus', {
-                controllerID: node.server
-            }).done(function (data, textStatus, jqXHR) {
-                try {
-                    if (Object.keys(data).length) {
-                        $eventTypesSelect.removeAttr('disabled');
-                        $.each(data, function (index, value) {
-                            $('<option  value="' + index + '">' + index + ' (' + value + ')</option>').appendTo($eventTypesSelect);
-                        });
-                        $eventTypesSelect.val(node.eventTypes);
 
-                        // Initialize bootstrap multiselect form
-                        $eventTypesSelect.multipleSelect({
-                            single: false,
-                            maxHeight: 300,
-                            dropWidth: 320,
-                            width: 320,
-                            filter: true,
-                            filterPlaceholder: RED._("node-red-contrib-miio-roborock/event:multiselect.filter_event")
-                        });
-                    }
-
-                } catch (error) {
-                    console.error('Error #4534');
-                    console.log(error);
-                }
-
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                $eventTypesSelect.multipleSelect('disable');
-                // $eventTypesSelect.multipleSelect('refresh');
-            });
+            // $.getJSON('miio-roborock/getStatus', {
+            //     controllerID: node.server
+            // }).done(function (data, textStatus, jqXHR) {
+            //     try {
+            //         if (Object.keys(data).length) {
+            //             $eventTypesSelect.removeAttr('disabled');
+            //             $.each(data, function (index, value) {
+            //                 $('<option  value="' + index + '">' + index + ' (' + value + ')</option>').appendTo($eventTypesSelect);
+            //             });
+            //             $eventTypesSelect.val(node.eventTypes);
+            //
+            //             // Initialize bootstrap multiselect form
+            //             $eventTypesSelect.multipleSelect({
+            //                 single: false,
+            //                 maxHeight: 300,
+            //                 dropWidth: 320,
+            //                 width: 320,
+            //                 filter: true,
+            //                 filterPlaceholder: RED._("node-red-contrib-miio-roborock/event:multiselect.filter_event")
+            //             });
+            //         }
+            //
+            //     } catch (error) {
+            //         console.error('Error #4534');
+            //         console.log(error);
+            //     }
+            //
+            // }).fail(function (jqXHR, textStatus, errorThrown) {
+            //
+            // });
         }
     });
 </script>

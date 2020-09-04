@@ -66,9 +66,10 @@ module.exports = function(RED) {
             if (Object.keys(node.server.status).length) {
                 for (var key in node.server.status) {
                     var value = node.server.status[key];
-                    if ((node.config.eventTypes).indexOf(key) >= 0) {
-                        node.send({'payload': {"key":key, "value":value}, 'status': node.server.status});
-                    }
+                    node.send({
+                        'payload': {"key":key, "value":value},
+                        'status': node.server.status
+                    });
                 }
             }
         }
@@ -79,14 +80,14 @@ module.exports = function(RED) {
             var status = {
                 fill: "green",
                 shape: "dot",
-                text: node.server.status.state
+                text: node.server.status.state_text
             };
 
             switch (status.text) {
                 case "cleaning":
                 case "spot-cleaning":
                 case "zone-cleaning":
-                    var duration = moment.duration({"seconds":node.server.status.cleanTime});
+                    var duration = moment.duration({"seconds":node.server.status.clean_time});
                     status.text += ' ' + duration.humanize();
                     status.shape = 'ring';
                 break;
@@ -102,8 +103,8 @@ module.exports = function(RED) {
                 case "full":
                     status.fill = 'red';
                     status.shape = 'dot';
-                    if ("error" in node.server.status && node.server.status.error && "code" in node.server.status.error) {
-                        status.text += ' code #'+ node.server.status.error.code;
+                    if ("error_code" in node.server.status && node.server.status.error_code > 0) {
+                        status.text += ' ⛔'+ node.server.status.error_code;
                     }
                     break;
 
@@ -120,21 +121,26 @@ module.exports = function(RED) {
                 break;
 
                 case "charging":
-                    if (node.server.status.batteryLevel <= 20) {
+                    if (node.server.status.battery <= 20) {
                         status.fill = 'red';
-                    } else if (node.server.status.batteryLevel <= 50) {
+                    } else if (node.server.status.battery <= 50) {
                         status.fill = 'yellow';
                     } else {
                         status.fill = 'green';
                     }
 
-                    status.shape = node.server.status.batteryLevel>=100?'dot':'ring';
+                    status.shape = node.server.status.battery>=100?'dot':'ring';
                 break;
             }
 
-            //add battery level
-            if ("batteryLevel" in node.server.status) {
-                status.text += ' (' + node.server.status.batteryLevel + '%)';
+            //add battery
+            if ("battery" in node.server.status) {
+                status.text += ' ⚡' + node.server.status.battery + '%';
+            }
+
+            //water mode
+            if ("water_box_carriage_status" in node.server.status && parseInt(node.server.status.water_box_carriage_status)) {
+                status.text += ' 💧';
             }
 
             node.status(status);
@@ -143,14 +149,15 @@ module.exports = function(RED) {
         onStateChanged(data, output) {
             var node = this;
 
-            if ("key" in data &&  ["state", "cleanTime", "batteryLevel"].indexOf(data.key) >= 0) {
+            if ("key" in data &&  ["state", "clean_time", "battery", "water_box_carriage_status"].indexOf(data.key) >= 0) {
                 node.updateStatus();
             }
 
             if (output) {
-                if ("key" in data && node.config.eventTypes && (node.config.eventTypes).indexOf(data.key) >= 0) {
-                    node.send({'payload': data, 'status': node.server.status});
-                }
+                node.send({
+                    'payload': data,
+                    'status': node.server.status
+                });
             }
         }
 

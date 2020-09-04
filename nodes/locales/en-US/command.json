@@ -28,7 +28,8 @@
         "he": "Hebrew",
         "uk": "Ukrainian",
         "s5_official": "Official: gen1, gen2 (v1,s5)",
-        "s6_official": "Official: gen3 (v1s,s6,t6)"
+        "s6_official": "Official: gen3 (v1s,s6,t6)",
+        "s5e_official": "Official: gen3 (s5e)"
     },
     "commands": {
         "app_start": "► Start",
@@ -44,11 +45,13 @@
         "app_segment_clean": "► Start room cleaning",
         "stop_segment_clean": "◼ Stop room cleaning",
         "resume_segment_clean": "► Resume room cleaning",
+        "get_room_mapping": "ⓘ Get room mapping",
         "find_me": "Find me",
         "app_goto_target": "Send to coordinates",
         "get_status": "ⓘ Get status",
         "get_consumable": "ⓘ Get consumables status",
         "get_custom_mode": "ⓘ Get fan power",
+        "get_water_box_custom_mode": "ⓘ Get water flow",
         "get_timezone": "ⓘ Get timezone",
         "get_sound_volume": "ⓘ Get sound level",
         "get_sound_progress": "ⓘ Get sound progress",
@@ -64,6 +67,7 @@
         "get_fw_features": "ⓘ Get modes",
         "app_get_locale": "ⓘ Get locale",
         "set_custom_mode": "⚙ Fan Power",
+        "set_water_box_custom_mode": "⚙ Water flow",
         "change_sound_volume": "⚙ Set sound level",
         "set_timezone": "⚙ Set timezone",
         "set_dnd_timer": "⚙ Set do not disturb time",
