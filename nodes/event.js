@@ -80,13 +80,14 @@ module.exports = function(RED) {
             var status = {
                 fill: "green",
                 shape: "dot",
-                text: node.server.status.state_text
+                text: node.server.status.state_text!==undefined?node.server.status.state_text:node.server.status.state
             };
 
             switch (status.text) {
                 case "cleaning":
                 case "spot-cleaning":
                 case "zone-cleaning":
+                case "room-cleaning":
                     var duration = moment.duration({"seconds":node.server.status.clean_time});
                     status.text += ' ' + duration.humanize();
                     status.shape = 'ring';
@@ -149,7 +150,7 @@ module.exports = function(RED) {
         onStateChanged(data, output) {
             var node = this;
 
-            if ("key" in data &&  ["state", "clean_time", "battery", "water_box_carriage_status"].indexOf(data.key) >= 0) {
+            if ("key" in data &&  ["state_text", "clean_time", "battery", "water_box_carriage_status"].indexOf(data.key) >= 0) {
                 node.updateStatus();
             }
 

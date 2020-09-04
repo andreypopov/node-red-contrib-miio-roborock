@@ -2,7 +2,7 @@
 
 Node-Red Nodes for Xiaomi Roborock Vacuum connectivity.
 
-<b>Important:</b> works and tested with Roborock s50 (2gen)
+<b>Important:</b> works and tested with Roborock s50 (gen2), Roborock s5 Max (gen3)
 
 Available nodes are:
 * miio-roborock-command: control your vacuum
