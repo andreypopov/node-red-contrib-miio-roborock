@@ -35,6 +35,12 @@ module.exports = function(RED) {
                     text: "node-red-contrib-miio-roborock/event:status.server_node_error"
                 });
             }
+
+            node.on('input', function(message) {
+                node.send({
+                    'payload': node.server.status
+                });
+            });
         }
 
         onClose() {

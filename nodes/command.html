@@ -72,7 +72,7 @@
 <script type='text/javascript'>
     RED.nodes.registerType('miio-roborock-command', {
         category: 'Xiaomi',
-        color: '#ff6700',
+        color: '#FF233F',
         defaults: {
             name: {
                 value: ""
@@ -113,7 +113,7 @@
         outputs: 1,
         outputLabels: ["result"],
         paletteLabel: 'Roborock: command',
-        icon: "miio.png",
+        icon: "roborock.png",
         label: function () {
             var label = 'Roborock: command';
             if (this.name) {
@@ -150,7 +150,7 @@
                     var topicTypes = {
                         value: 'vacuum_cmd',
                         label: 'mi',
-                        icon: 'icons/node-red-contrib-miio-roborock/icon-color.png',
+                        icon: 'icons/node-red-contrib-miio-roborock/roborock-color.png',
                         options: commands
                     };
                     $commandInput.typedInput({
@@ -168,7 +168,7 @@
                     var payloadTypes = {
                         value: 'vacuum_payload',
                         label: 'mi',
-                        icon: 'icons/node-red-contrib-miio-roborock/icon-color.png',
+                        icon: 'icons/node-red-contrib-miio-roborock/roborock-color.png',
                         options: [{'value':'arguments', 'label':'Enter arguments'}]
                     };
                     $payloadInput.typedInput({
