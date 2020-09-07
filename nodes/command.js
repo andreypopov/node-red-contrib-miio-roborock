@@ -212,13 +212,22 @@ module.exports = function(RED) {
                 return null;
             }
 
-
+            var node = this;
             var msg = {};
 
             if (Object.keys(payload).length) {
-                if (payload.RotationSpeed !== undefined) {
+                if (payload.RotationSpeed !== undefined && Object.keys(MiioRoborockVocabulary.fan_power(node.server.device.miioModel)).length) {
+                    var newCustomMode = 0;
+                    var delta = 100;
+                    var speeds = MiioRoborockVocabulary.fan_power(node.server.device.miioModel);
+                    for (var i in speeds) {
+                        if (delta > Math.abs(payload.RotationSpeed - speeds[i].homekitTopLevel)) {
+                            newCustomMode = speeds[i].miLevel;
+                            delta = Math.abs(payload.RotationSpeed - speeds[i].homekitTopLevel);
+                        }
+                    }
                     msg['command'] = 'set_custom_mode';
-                    msg['payload'] = [payload.RotationSpeed];
+                    msg['payload'] = [newCustomMode];
                 } else if (payload.Active !== undefined) {
                     msg['command'] = payload.Active ? 'app_start' : 'app_stop';
                     msg['payload'] = [];
