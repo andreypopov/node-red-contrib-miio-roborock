@@ -2,6 +2,11 @@ const EventEmitter = require('events');
 const miio = require('miio');
 const MiioRoborockVocabulary = require('../lib/miio-roborock-vocabulary.js');
 
+const mihome = require('node-mihome');
+mihome.miioProtocol.init();
+mihome.aqaraProtocol.init();
+
+
 module.exports = function (RED) {
     class ServerNode {
         constructor(n) {
@@ -28,25 +33,57 @@ module.exports = function (RED) {
             }, node.refreshFindInterval);
         }
 
-        // find(callback) {
-        //     var node = this;
-        //
-        //     const devices = miio.devices({
-        //         cacheTime: 300 // 5 minutes. Default is 1800 seconds (30 minutes)
-        //     });
-        //
-        //     devices.on('available', device => {
-        //         console.log('available');
-        //         console.log(device);
-        //         if(device.matches('placeholder')) {
-        //             // This device is either missing a token or could not be connected to
-        //         } else {
-        //             // Do something useful with device
-        //         }
-        //     });
-        //
-        //
-        // }
+        find(email, password, ipAddress) {
+            var node = this;
+
+            return new Promise(function (resolve, reject) {
+//********* CONFIGURATION *********
+                var _COUNTRY = "de"
+//********* CONFIGURATION END *********
+
+                if (mihome.miCloudProtocol.isLoggedIn) {
+                    GetDeviceByIP(ipAddress).then(data => {
+                        resolve(data)
+                    }).catch(err => {
+                        reject({"error_description": "Device not found, check IP address", "err":err});
+                    });
+                } else {
+                    LoginMethod().then(_ => {
+                        GetDeviceByIP(ipAddress).then(data => {
+                            resolve(data)
+                        }).catch(err => {
+                            reject({"error_description": "Device not found, check IP address", "err":err});
+                        });
+                    }).catch(err => {
+                        reject({"error_description": "Error: Invalid email/password", "err":err});
+                    });
+                }
+
+                async function LoginMethod() {
+                    await mihome.miCloudProtocol.login(email, password);
+                }
+
+                async function GetDeviceByIP(ip_address) {
+                    return new Promise((resolve, reject) => {
+                        GetDevices().then(devices => {
+                            for (var i in devices) {
+                                if (devices[i].localip === ip_address) {
+                                    resolve(devices[i]);
+                                    break;
+                                }
+                            }
+                            reject({"error_description": 'Device not found'});
+                        }).catch(err => {
+                            reject({"error_description": 'Get devices error'});
+                        });
+                    });
+                }
+
+                async function GetDevices() {
+                    return await mihome.miCloudProtocol.getDevices(null, {country: _COUNTRY});
+                }
+            });
+        }
 
         onClose() {
             var that = this;
@@ -159,6 +196,8 @@ module.exports = function (RED) {
                 }
             });
         }
+
+
     }
 
     RED.nodes.registerType('miio-roborock-server', ServerNode, {});

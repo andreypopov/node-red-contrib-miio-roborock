@@ -5,6 +5,7 @@
         "token": "Token",
         "settings": "Settings",
         "find": "Find!",
+        "get_token": "Get Token",
         "polling": "Polling, sec"
     }
 }

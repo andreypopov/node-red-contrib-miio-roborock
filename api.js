@@ -33,32 +33,17 @@ module.exports = function (RED) {
         res.json(MiioRoborockVocabulary.voices);
     });
 
-    // RED.httpAdmin.get(NODE_PATH + 'find', function (req, res) {
-    //     var config = req.query;
-    //     var controller = RED.nodes.getNode(config.controllerID);
-    //
-    //
-    //     setTimeout(function(){
-    //         const devices = miio.devices({
-    //             cacheTime: 300 // 5 minutes. Default is 1800 seconds (30 minutes)
-    //         });
-    //
-    //         devices.on('available', device => {
-    //             console.log(device);
-    //         });
-    //     }, 1000);
-    //
-    //
-    //     if (controller && controller.constructor.name === "ServerNode") {
-    //         controller.find(function (result) {
-    //             if (result) {
-    //                 res.json(result);
-    //             } else {
-    //                 res.status(404).end();
-    //             }
-    //         }, forceRefresh);
-    //     } else {
-    //         res.status(404).end();
-    //     }
-    // });
+    RED.httpAdmin.get(NODE_PATH + 'find', function (req, res) {
+        var config = req.query;
+        var controller = RED.nodes.getNode(config.controllerID);
+        if (controller && controller.constructor.name === "ServerNode") {
+            controller.find(config.email, config.password, config.ipAddress).then(function(response){
+                res.json(response);
+            }).catch(error => {
+                res.json(error);
+            });
+        } else {
+            res.status(404).end();
+        }
+    });
 }

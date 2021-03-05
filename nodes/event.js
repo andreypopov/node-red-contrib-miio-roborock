@@ -111,7 +111,7 @@ module.exports = function(RED) {
                     status.fill = 'red';
                     status.shape = 'dot';
                     if ("error_code" in node.server.status && node.server.status.error_code > 0) {
-                        status.text += ' ⛔'+ node.server.status.error_code;
+                        status.text += ' ⛔';
                     }
                     break;
 

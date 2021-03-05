@@ -15,13 +15,13 @@
         <input type="text" id="node-config-input-token">
     </div>
     <div class="form-row">
-        <label for="node-input-pooling" class="l-width"><i class="icon-time"></i> <span data-i18n="label.polling"></span></label>
+        <label for="node-input-polling" class="l-width"><i class="icon-time"></i> <span data-i18n="label.polling"></span></label>
         <input type="text" id="node-config-input-polling">
     </div>
-<!--    <div class="form-row">-->
-<!--        <label for="auto-find" class="l-width"><i class="fa fa-refresh"></i> <span data-i18n="label.settings"></span></label>-->
-<!--        <button type="button" style="width: 70%" class="btn btn-light" id="auto-find" name="auto-find"><span data-i18n="label.find"></span></button>-->
-<!--	</div>-->
+    <div class="form-row">
+        <label for="auto-find" class="l-width"><i class="fa fa-refresh"></i> <span data-i18n="label.get_token"></span></label>
+        <button type="button" style="width: 70%" class="btn btn-light" id="auto-find" name="auto-find"><i class=""></i> <span data-i18n="label.find"></span></button>
+	</div>
 </script>
 
 <script type="text/javascript">
@@ -44,16 +44,43 @@
         },
         oneditprepare: function () {
             var node = this;
-            // var $findBtn = $('#auto-find');
-            //
-            // $findBtn.on('click', function(){
-            //
-            //     $.getJSON('miio-roborock/find', {})
-            //         .done(function (data, textStatus, jqXHR) {
-            //             console.log(data);
-            //         }).fail(function (jqXHR, textStatus, errorThrown) {});
-            //
-            // });
+
+            var $findBtn = $('#auto-find');
+            $findBtn.on('click', function(){
+                if (!$('#node-config-input-ip').val().length) {
+                    alert('Fill IP address');
+                    return false;
+                }
+                let email = prompt('MiHome: Email address', '');
+                let pass = prompt('MiHome: Password', '');
+                if (!email || !pass) {
+                    alert('Fill Email/Password');
+                    return false;
+                }
+
+                $('#auto-find i').addClass('fa fa-spin fa-spinner');
+
+                $.getJSON('miio-roborock/find', {
+                    controllerID: node.id,
+                    ipAddress: $('#node-config-input-ip').val(),
+                    email: email,
+                    password: pass
+                }).done(function (data, textStatus, jqXHR) {
+                    $('#auto-find i').removeClass('fa fa-spin fa-spinner');
+
+                    if ("token" in data) {
+                        $('#node-config-input-token').val(data.token);
+
+                        if (!$('#node-config-input-name').val().length) {
+                            $('#node-config-input-name').val(data.name);
+                        }
+                    } else if ("error_description" in data) {
+                        alert(data.error_description);
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                });
+
+            });
         },
     });
 </script>
