@@ -1,6 +1,7 @@
 const EventEmitter = require('events');
 const miio = require('miio');
 const MiioRoborockVocabulary = require('../lib/miio-roborock-vocabulary.js');
+const retryOpertation = require('../lib/retry.js');
 
 const mihome = require('node-mihome');
 mihome.miioProtocol.init();
@@ -22,14 +23,17 @@ module.exports = function (RED) {
             node.refreshFindInterval = node.config.polling * 1000;
             node.on('close', () => this.onClose());
 
-            node.connect().then(result => {
-                node.getStatus(true).then(result => {
-                    node.emit("onInitEnd", result);
-                });
-            });
+            retryOperation(node.connect.bind(node), 'Connecting Miio Roborock')
+                .then((result) => {
+                    return node.getStatus(true)
+                        .then((result) => {
+                            node.emit("onInitEnd", result);
+                        });
+                })
+                .catch((e) => console.log('Connecting to Miio Roborock failed', e));
 
             node.refreshStatusTimer = setInterval(function () {
-                node.getStatus(true);
+                node.getStatus(true).catch((e) => console.log('Could not get status:', e));
             }, node.refreshFindInterval);
         }
 
