@@ -3,9 +3,6 @@ const miio = require('miio');
 const MiioRoborockVocabulary = require('../lib/miio-roborock-vocabulary.js');
 const retryOperation = require('../lib/retry.js');
 
-const mihome = require('node-mihome');
-mihome.miioProtocol.init();
-mihome.aqaraProtocol.init();
 
 
 module.exports = function (RED) {
@@ -17,6 +14,7 @@ module.exports = function (RED) {
             node.config = n;
             node.state = [];
             node.status = {};
+            node.connected = false;
 
             node.setMaxListeners(255);
             node.refreshFindTimer = null;
@@ -28,72 +26,25 @@ module.exports = function (RED) {
             //         node.emit("onInitEnd", result);
             //     });
             // });
-            retryOperation(node.connect.bind(node), 'Connecting Miio Roborock')
-                .then((result) => {
-                    return node.getStatus(true)
-                        .then((result) => {
-                            node.emit("onInitEnd", result);
-                        });
-                }).catch((e) => console.log('Connecting to Miio Roborock failed', e));
+            if (node.config.token) {
+                retryOperation(node.connect.bind(node), 'Connecting Miio Roborock')
+                    .then((result) => {
+                        return node.getStatus(true)
+                            .then((result) => {
+                                node.emit("onInitEnd", result);
+                            });
+                    }).catch((e) => node.warn('Connecting to Miio Roborock failed'));
 
+                if (node.connected) {
 
-            node.refreshStatusTimer = setInterval(function () {
-                // node.getStatus(true);
-                node.getStatus(true).catch((e) => console.log('Could not get status:', e));
-            }, node.refreshFindInterval);
+                    node.refreshStatusTimer = setInterval(function() {
+                        // node.getStatus(true);
+                        node.getStatus(true).catch((e) => node.warn('Could not get status:', e));
+                    }, node.refreshFindInterval);
+                }
+            }
         }
 
-        find(email, password, ipAddress) {
-            var node = this;
-
-            return new Promise(function (resolve, reject) {
-//********* CONFIGURATION *********
-                var _COUNTRY = "de"
-//********* CONFIGURATION END *********
-
-                if (mihome.miCloudProtocol.isLoggedIn) {
-                    GetDeviceByIP(ipAddress).then(data => {
-                        resolve(data)
-                    }).catch(err => {
-                        reject({"error_description": "Device not found, check IP address", "err":err});
-                    });
-                } else {
-                    LoginMethod().then(_ => {
-                        GetDeviceByIP(ipAddress).then(data => {
-                            resolve(data)
-                        }).catch(err => {
-                            reject({"error_description": "Device not found, check IP address", "err":err});
-                        });
-                    }).catch(err => {
-                        reject({"error_description": "Error: Invalid email/password", "err":err});
-                    });
-                }
-
-                async function LoginMethod() {
-                    await mihome.miCloudProtocol.login(email, password);
-                }
-
-                async function GetDeviceByIP(ip_address) {
-                    return new Promise((resolve, reject) => {
-                        GetDevices().then(devices => {
-                            for (var i in devices) {
-                                if (devices[i].localip === ip_address) {
-                                    resolve(devices[i]);
-                                    break;
-                                }
-                            }
-                            reject({"error_description": 'Device not found'});
-                        }).catch(err => {
-                            reject({"error_description": 'Get devices error'});
-                        });
-                    });
-                }
-
-                async function GetDevices() {
-                    return await mihome.miCloudProtocol.getDevices(null, {country: _COUNTRY});
-                }
-            });
-        }
 
         onClose() {
             var that = this;
@@ -127,9 +78,11 @@ module.exports = function (RED) {
                         node.log('Miio Roborock: Destroyed');
                     });
 
+                    node.connected = true;
                     resolve(device);
 
                 }).catch(err => {
+                    node.connected = false;
                     node.warn('Miio Roborock Error: ' + err.message);
                     reject(err);
                 });

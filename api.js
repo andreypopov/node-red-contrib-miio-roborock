@@ -1,6 +1,10 @@
 var NODE_PATH = '/miio-roborock/';
 const MiioRoborockVocabulary = require('./lib/miio-roborock-vocabulary.js');
 
+const mihome = require('node-mihome');
+mihome.miioProtocol.init();
+mihome.aqaraProtocol.init();
+
 
 module.exports = function (RED) {
     /**
@@ -35,15 +39,67 @@ module.exports = function (RED) {
 
     RED.httpAdmin.get(NODE_PATH + 'find', function (req, res) {
         var config = req.query;
-        var controller = RED.nodes.getNode(config.controllerID);
-        if (controller && controller.constructor.name === "ServerNode") {
-            controller.find(config.email, config.password, config.ipAddress).then(function(response){
-                res.json(response);
-            }).catch(error => {
-                res.json(error);
+        // var controller = RED.nodes.getNode(config.controllerID);
+        // if (controller && controller.constructor.name === "ServerNode") {
+        find(config.email, config.password, config.ipAddress).then(function(response){
+            res.json(response);
+        }).catch(error => {
+            res.json(error);
+        });
+        // } else {
+        //     res.json({"error_description":"You have to deploy before searching token"});
+        // }
+
+        function find(email, password, ipAddress) {
+            var node = this;
+
+            return new Promise(function (resolve, reject) {
+//********* CONFIGURATION *********
+                var _COUNTRY = "de"
+//********* CONFIGURATION END *********
+
+                if (mihome.miCloudProtocol.isLoggedIn) {
+                    GetDeviceByIP(ipAddress).then(data => {
+                        resolve(data)
+                    }).catch(err => {
+                        reject({"error_description": "Device not found, check IP address", "err":err});
+                    });
+                } else {
+                    LoginMethod().then(_ => {
+                        GetDeviceByIP(ipAddress).then(data => {
+                            resolve(data)
+                        }).catch(err => {
+                            reject({"error_description": "Device not found, check IP address", "err":err});
+                        });
+                    }).catch(err => {
+                        reject({"error_description": "Error: Invalid email/password", "err":err});
+                    });
+                }
+
+                async function LoginMethod() {
+                    await mihome.miCloudProtocol.login(email, password);
+                }
+
+                async function GetDeviceByIP(ip_address) {
+                    return new Promise((resolve, reject) => {
+                        GetDevices().then(devices => {
+                            for (var i in devices) {
+                                if (devices[i].localip === ip_address) {
+                                    resolve(devices[i]);
+                                    break;
+                                }
+                            }
+                            reject({"error_description": 'Device not found'});
+                        }).catch(err => {
+                            reject({"error_description": 'Get devices error'});
+                        });
+                    });
+                }
+
+                async function GetDevices() {
+                    return await mihome.miCloudProtocol.getDevices(null, {country: _COUNTRY});
+                }
             });
-        } else {
-            res.status(404).end();
         }
     });
 }
