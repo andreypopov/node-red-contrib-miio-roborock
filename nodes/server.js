@@ -41,14 +41,14 @@ module.exports = function (RED) {
                 //             });
                 //     }).catch((e) => node.warn('Connecting to Miio Roborock failed'));
 
-                if (node.connected) {
+
 
                     node.refreshStatusTimer = setInterval(function() {
                         // node.getStatus(true);
                         node.getStatus(true).catch((e) => console.log('Could not get status:', e));
 
                     }, node.refreshFindInterval);
-                }
+
             }
         }
 
@@ -74,18 +74,16 @@ module.exports = function (RED) {
                     node.device = device;
                     node.device.updateMaxPollFailures(0);
 
-
-                    // console.log('Miio Roborock: Connected');
-
                     node.device.on('thing:initialized', () => {
                         node.log('Miio Roborock: Initialized');
+                        node.connected = true;
                     });
 
                     node.device.on('thing:destroyed', () => {
                         node.log('Miio Roborock: Destroyed');
+                        node.connected = false;
                     });
 
-                    node.connected = true;
                     resolve(device);
 
                 }).catch(err => {
@@ -100,6 +98,10 @@ module.exports = function (RED) {
             var that = this;
 
             return new Promise(function (resolve, reject) {
+                if (!that.connected) {
+                    reject('not connected');
+                }
+
                 if (force || !that.status) {
                     if (that.device !== null && that.device !== undefined) {
                         that.device.call("get_status", [])

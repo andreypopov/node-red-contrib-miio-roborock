@@ -11,8 +11,7 @@
     "events": "latest",
     "miio": "latest",
     "moment": "latest",
-    "node-mihome": "latest",
-    "download-file": "0.1.5"
+    "node-mihome": "latest"
   },
   "description": "Xiaomi Roborock connectivity nodes for node-red",
   "homepage": "https://github.com/andreypopov/node-red-contrib-miio-roborock",
@@ -37,5 +36,5 @@
     "type": "git",
     "url": "git+https://github.com/andreypopov/node-red-contrib-miio-roborock"
   },
-  "version": "2.1.3"
+  "version": "2.2.0"
 }
