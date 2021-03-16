@@ -14,7 +14,7 @@ module.exports = function (RED) {
             node.config = n;
             node.state = [];
             node.status = {};
-            node.connected = false;
+            // node.connected = false;
 
             node.setMaxListeners(255);
             node.refreshFindTimer = null;
@@ -76,12 +76,12 @@ module.exports = function (RED) {
 
                     node.device.on('thing:initialized', () => {
                         node.log('Miio Roborock: Initialized');
-                        node.connected = true;
+                        // node.connected = true;
                     });
 
                     node.device.on('thing:destroyed', () => {
                         node.log('Miio Roborock: Destroyed');
-                        node.connected = false;
+                        // node.connected = false;
                     });
 
                     resolve(device);
@@ -98,9 +98,9 @@ module.exports = function (RED) {
             var that = this;
 
             return new Promise(function (resolve, reject) {
-                if (!that.connected) {
-                    reject('not connected');
-                }
+                // if (!that.connected) {
+                //     reject('not connected');
+                // }
 
                 if (force || !that.status) {
                     if (that.device !== null && that.device !== undefined) {
