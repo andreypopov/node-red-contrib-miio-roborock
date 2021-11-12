@@ -30,7 +30,7 @@ module.exports = function (RED) {
                 node.connect().then(result => {
                     node.getStatus(true).then(result => {
                         node.emit("onInitEnd", result);
-                    });
+                    }).catch((e) => node.log('No connection:', e));
                 });
 
                 // retryOperation(node.connect.bind(node), 'Connecting Miio Roborock')
@@ -43,12 +43,11 @@ module.exports = function (RED) {
 
 
 
-                    node.refreshStatusTimer = setInterval(function() {
-                        // node.getStatus(true);
-                        node.getStatus(true).catch((e) => console.log('Could not get status:', e));
+                node.refreshStatusTimer = setInterval(function() {
+                    // node.getStatus(true);
+                    node.getStatus(true).catch((e) => node.log('No connection (get status)', e));
 
-                    }, node.refreshFindInterval);
-
+                }, node.refreshFindInterval);
             }
         }
 
@@ -73,23 +72,21 @@ module.exports = function (RED) {
                 }).then(device => {
                     node.device = device;
                     node.device.updateMaxPollFailures(0);
-
                     node.device.on('thing:initialized', () => {
                         node.log('Miio Roborock: Initialized');
                         // node.connected = true;
                     });
-
                     node.device.on('thing:destroyed', () => {
                         node.log('Miio Roborock: Destroyed');
                         // node.connected = false;
                     });
-
                     resolve(device);
 
                 }).catch(err => {
                     node.connected = false;
                     node.warn('Miio Roborock Error: ' + err.message);
-                    reject(err);
+                    //reject(err);
+                    // reject();
                 });
             });
         }
