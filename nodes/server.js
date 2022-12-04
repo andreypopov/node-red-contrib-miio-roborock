@@ -26,7 +26,7 @@ module.exports = function (RED) {
             //         node.emit("onInitEnd", result);
             //     });
             // });
-            if (node.config.token) {
+            if (node.credentials.token) {
                 node.connect().then(result => {
                     node.getStatus(true).then(result => {
                         node.emit("onInitEnd", result);
@@ -68,7 +68,7 @@ module.exports = function (RED) {
             return new Promise(function (resolve, reject) {
                 node.miio = miio.device({
                     address: node.config.ip,
-                    token: node.config.token
+                    token: node.credentials.token
                 }).then(device => {
                     node.device = device;
                     node.device.updateMaxPollFailures(0);
