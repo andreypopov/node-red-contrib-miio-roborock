@@ -27,10 +27,12 @@
 <script type="text/javascript">
     RED.nodes.registerType('miio-roborock-server',{
         category: 'config',
+	credentials: {
+          token: {type: "password", required: true}
+        },
         defaults: {
             name: {value: "", required: false},
             ip: {value: "", required: true},
-            token: {value: "", required: true},
             polling: {
                 value: 10,
                 required: true,
