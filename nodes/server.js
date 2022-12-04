@@ -169,6 +169,10 @@ module.exports = function (RED) {
 
     }
 
-    RED.nodes.registerType('miio-roborock-server', ServerNode, {});
+    RED.nodes.registerType('miio-roborock-server', ServerNode, {
+      credentials: {
+          token: {type:"password"}
+      }
+    });
 };
 
