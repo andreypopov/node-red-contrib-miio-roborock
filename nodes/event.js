@@ -150,6 +150,12 @@ module.exports = function(RED) {
                 status.text += ' 💧';
             }
 
+            //dry status
+            if ("dry_status" in node.server.status && parseInt(node.server.status.dry_status)) {
+                status.text += ' ♨ ';
+            }
+
+
             node.status(status);
         }
 

@@ -4,8 +4,8 @@
         "email": "andrey_popov@me.com"
     },
     "name": "node-red-contrib-miio-roborock",
-    "description": "Xiaomi Roborock connectivity nodes for node-red",
-    "version": "2.3.4",
+    "description": "Roborock connectivity nodes for node-red",
+    "version": "2.4.0",
     "dependencies": {
         "bootstrap-multiselect": "latest",
         "events": "latest",
@@ -18,7 +18,8 @@
         "xiaomi",
         "miio",
         "roborock",
-        "vacuum"
+        "vacuum",
+	"cleaner"
     ],
     "license": "GPL",
     "node-red": {
