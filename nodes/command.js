@@ -56,11 +56,6 @@ module.exports = function(RED) {
                         break;
                     }
 
-                    case 'object': {
-                        payload = node.config.payload;
-                        break;
-                    }
-
                     case 'vacuum_payload':
                     case 'homekit':
                     case 'msg':
@@ -143,6 +138,7 @@ module.exports = function(RED) {
                         }
                         break;
 
+                    case 'object':
                     case 'str':
                     default: {
                         command = node.config.command;
@@ -150,8 +146,11 @@ module.exports = function(RED) {
                     }
                 }
 
-
-                if (typeof(command) === 'object') {
+                if (command === 'json') {
+                    for (var key in payload) {
+                        node.sendCommand(key, payload[key]);
+                    }
+                } else if (typeof(command) === 'object') {
                     for (var key in command) {
                         node.sendCommand(command[key], payload[key]);
                     }
